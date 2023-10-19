@@ -6,8 +6,10 @@ package mr
 // remember to capitalize all names.
 //
 
-import "os"
-import "strconv"
+import (
+	"os"
+	"strconv"
+)
 
 //
 // example to show how to declare the arguments
@@ -18,12 +20,38 @@ type ExampleArgs struct {
 	X int
 }
 
+type HeloRequest struct {
+}
+
+type HeloReply struct {
+}
+
 type ExampleReply struct {
 	Y int
 }
 
-// Add your RPC definitions here.
+// 请求任务
+type MapRequest struct {
+}
 
+type MapReply struct {
+	Filename string
+	Succ     bool
+	Kind     int8
+	nReduce  int16
+	ID       uint64
+}
+
+// 完成任务
+type MapDoneReq struct {
+	ID       uint64
+	Filename string
+}
+
+type MapDoneRep struct {
+}
+
+// Add your RPC definitions here.
 
 // Cook up a unique-ish UNIX-domain socket name
 // in /var/tmp, for the master.
