@@ -3,28 +3,12 @@ package mr
 import (
 	"encoding/json"
 	"fmt"
-	"hash/fnv"
 	"io"
 	"log"
 	"net/rpc"
 	"os"
-	"plugin"
 	"time"
 )
-
-// Map functions return a slice of KeyValue.
-type KeyValue struct {
-	Key   string
-	Value string
-}
-
-// use ihash(key) % NReduce to choose the reduce
-// task number for each KeyValue emitted by Map.
-func ihash(key string) int {
-	h := fnv.New32a()
-	h.Write([]byte(key))
-	return int(h.Sum32() & 0x7fffffff)
-}
 
 func MapDone(id uint64, filename string) {
 	mapDoneReq := MapDoneReq{}
@@ -34,8 +18,15 @@ func MapDone(id uint64, filename string) {
 	call("Master.MapDone", &mapDoneReq, &mapDoneRep)
 }
 
+func ReduceDone(id int) {
+	reduceDoneRequest := ReduceDoneRequest{}
+	reduceDoneRequest.ID = id
+	reduceDoneRep := ReduceDoneRep{}
+	call("Master.ReduceDone", &reduceDoneRequest, &reduceDoneRep)
+}
+
 func MapWorker(mapf func(string, string) []KeyValue, mapReply MapReply) {
-	fmt.Println("map")
+	fmt.Println("start map")
 	fmt.Println(mapReply.Filename)
 	defer MapDone(mapReply.ID, mapReply.Filename)
 	file, err := os.Open(mapReply.Filename)
@@ -54,14 +45,24 @@ func MapWorker(mapf func(string, string) []KeyValue, mapReply MapReply) {
 	if err != nil {
 		log.Fatalf("cannot create temp file " + filename)
 	}
-	enc := json.NewEncoder(f)
-	for _, kv := range kva {
-		err := enc.Encode(&kv)
-		if err != nil {
-			log.Fatalf("json encode fail")
-		}
+	j, err := json.Marshal(kva)
+	if err != nil {
+		log.Fatal(err)
 	}
+	f.Write(j)
+	// enc := json.NewEncoder(f)
+	// for _, kv := range kva {
+	// 	err := enc.Encode(&kv)
+	// 	if err != nil {
+	// 		log.Fatalf("json encode fail")
+	// 	}
+	// }
 	os.Rename(f.Name(), filename)
+}
+
+func ReduceWorker(reducef func(string, []string) string, mapReply MapReply) {
+	fmt.Println("start reduce")
+	defer ReduceDone(mapReply.NReduce)
 }
 
 // main/mrworker.go calls this function.
@@ -69,22 +70,23 @@ func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
 
 	// Your worker implementation here.
-	mapRequest := MapRequest{}
-	mapReply := MapReply{}
-	for call("Master.GetTask", &mapRequest, &mapReply); mapReply.Succ; call("Master.GetTask", &mapRequest, &mapReply) {
+	for {
+		mapRequest := MapRequest{}
+		mapReply := MapReply{}
+		call("Master.GetTask", &mapRequest, &mapReply)
 		// 调用map函数
+		fmt.Println(mapReply)
 		if mapReply.Kind == 0 {
 			go MapWorker(mapf, mapReply)
 		} else if mapReply.Kind == 1 {
-			fmt.Println("reduce")
+			go ReduceWorker(reducef, mapReply)
 		} else {
 			fmt.Println("other")
 			time.Sleep(time.Second)
 		}
 		time.Sleep(time.Second)
-
 	}
-	fmt.Println("worker exit")
+	// fmt.Println("worker exit")
 	// uncomment to send the Example RPC to the master.
 	// CallExample()
 }
@@ -129,25 +131,4 @@ func call(rpcname string, args interface{}, reply interface{}) bool {
 
 	fmt.Println(err)
 	return false
-}
-
-// load the application Map and Reduce functions
-// from a plugin file, e.g. ../mrapps/wc.so
-func loadPlugin(filename string) (func(string, string) []KeyValue, func(string, []string) string) {
-	p, err := plugin.Open(filename)
-	if err != nil {
-		log.Fatalf("cannot load plugin %v", filename)
-	}
-	xmapf, err := p.Lookup("Map")
-	if err != nil {
-		log.Fatalf("cannot find Map in %v", filename)
-	}
-	mapf := xmapf.(func(string, string) []KeyValue)
-	xreducef, err := p.Lookup("Reduce")
-	if err != nil {
-		log.Fatalf("cannot find Reduce in %v", filename)
-	}
-	reducef := xreducef.(func(string, []string) string)
-
-	return mapf, reducef
 }

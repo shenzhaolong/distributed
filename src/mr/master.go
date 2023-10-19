@@ -1,24 +1,44 @@
 package mr
 
 import (
+	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"log"
 	"net"
 	"net/http"
 	"net/rpc"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
 
 type Master struct {
 	// Your definitions here.
-	fileNum   int
-	mapMux    sync.Mutex
-	mapAlloc  map[string]int
-	mapWork   map[string]int
-	mapID     uint64
-	isShuffle bool
+	fileNum    int
+	mapMux     sync.Mutex
+	mapAlloc   map[string]int
+	mapWork    map[string]int
+	mapReduce  map[int]int
+	mapID      uint64
+	isShuffle  bool
+	nReduce    int
+	reduceDone int
+}
+
+// use ihash(key) % NReduce to choose the reduce
+// task number for each KeyValue emitted by Map.
+func ihash(key string) int {
+	h := fnv.New32a()
+	h.Write([]byte(key))
+	return int(h.Sum32() & 0x7fffffff)
+}
+
+// Map functions return a slice of KeyValue.
+type KeyValue struct {
+	Key   string
+	Value string
 }
 
 func (m *Master) addWork(filename string) {
@@ -58,6 +78,22 @@ func (m *Master) delAlloc(filename string) {
 	}
 }
 
+func (m *Master) getReduce(reduceID *int) bool {
+	m.mapMux.Lock()
+	defer m.mapMux.Unlock()
+	*reduceID = -1
+	for k := range m.mapReduce {
+		if m.mapReduce[k] == 0 {
+			*reduceID = k
+			// 1表示该ID已分配
+			m.mapReduce[k] = 1
+			break
+		}
+	}
+	fmt.Println("get reduce number: " + fmt.Sprint(*reduceID))
+	return *reduceID != -1
+}
+
 // Your code here -- RPC handlers for the worker to call.
 
 // an example RPC handler.
@@ -73,6 +109,63 @@ func (m *Master) listenMapWork(filename string) {
 	m.delAlloc(filename)
 }
 
+func (m *Master) shuffle() {
+	files, err := os.ReadDir("./")
+	if err != nil {
+		log.Fatalf("shuffle error")
+	}
+	fmt.Println("start shuffle")
+	for _, file := range files {
+		if strings.Contains(file.Name(), "mr-med-") {
+			content, err := os.ReadFile(file.Name())
+			if err != nil {
+				log.Fatal(err)
+			}
+			var kvs []KeyValue
+			err = json.Unmarshal(content, &kvs)
+			if err != nil {
+				log.Fatal(err)
+			}
+			for _, kv := range kvs {
+				idx := ihash(kv.Key)%m.nReduce + 1
+				f, err := os.OpenFile("mr-reduce-"+fmt.Sprint(idx), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+				if err != nil {
+					log.Fatal(err)
+				}
+				b, err := json.Marshal(kv)
+				if err != nil {
+					log.Fatal(err)
+				}
+				f.Write(b)
+				f.Close()
+			}
+		}
+	}
+	m.isShuffle = true
+	fmt.Println("end shuffle")
+}
+
+func (m *Master) listenReduceWork(reduceID int) {
+	time.Sleep(10 * time.Second)
+	m.mapMux.Lock()
+	defer m.mapMux.Unlock()
+	if m.mapReduce[reduceID] != 2 {
+		m.mapReduce[reduceID] = 0
+		m.reduceDone++
+	}
+}
+
+func (m *Master) ReduceDone(args *ReduceDoneRequest, reply *ReduceDoneRep) error {
+	m.mapMux.Lock()
+	defer m.mapMux.Unlock()
+	_, ok := m.mapReduce[args.ID]
+	if ok {
+		m.mapReduce[args.ID] = 2
+		m.reduceDone--
+	}
+	return nil
+}
+
 func (m *Master) GetTask(args *MapRequest, reply *MapReply) error {
 	if !m.isAllMapDone() {
 		taskname, mapID, ok := m.allocWork(0)
@@ -86,9 +179,19 @@ func (m *Master) GetTask(args *MapRequest, reply *MapReply) error {
 			reply.ID = mapID
 			go m.listenMapWork(taskname)
 		}
-	} else {
-		reply.Kind = 1
+	} else if m.isShuffle {
+		reply.Kind = 101
 		reply.Succ = true
+		var reduceID int = -1
+		if m.getReduce(&reduceID) {
+			reply.Kind = 1
+			reply.NReduce = reduceID
+			go m.listenReduceWork(reduceID)
+		}
+	} else {
+		reply.Kind = 101
+		reply.Succ = true
+		m.shuffle()
 	}
 	return nil
 }
@@ -128,11 +231,10 @@ func (m *Master) server() {
 // main/mrmaster.go calls Done() periodically to find out
 // if the entire job has finished.
 func (m *Master) Done() bool {
-	ret := false
-
 	// Your code here.
-
-	return ret
+	m.mapMux.Lock()
+	defer m.mapMux.Unlock()
+	return m.reduceDone == 0
 }
 
 // create a Master.
@@ -147,6 +249,13 @@ func MakeMaster(files []string, nReduce int) *Master {
 	m.mapAlloc = make(map[string]int)
 	m.mapWork = make(map[string]int)
 	fmt.Println("file size: " + fmt.Sprint(m.fileNum))
+	m.isShuffle = false
+	m.nReduce = nReduce
+	m.reduceDone = nReduce
+	m.mapReduce = make(map[int]int)
+	for i := 1; i <= nReduce; i++ {
+		m.mapReduce[i] = 0
+	}
 	m.mapMux.Unlock()
 	for _, filename := range files {
 		m.addWork(filename)

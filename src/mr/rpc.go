@@ -38,17 +38,25 @@ type MapReply struct {
 	Filename string
 	Succ     bool
 	Kind     int8
-	nReduce  int16
+	NReduce  int
 	ID       uint64
 }
 
-// 完成任务
+// 完成Map任务
 type MapDoneReq struct {
 	ID       uint64
 	Filename string
 }
 
 type MapDoneRep struct {
+}
+
+// 完成Reduce任务
+type ReduceDoneRequest struct {
+	ID int
+}
+
+type ReduceDoneRep struct {
 }
 
 // Add your RPC definitions here.
