@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/rpc"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -26,8 +28,6 @@ func ReduceDone(id int) {
 }
 
 func MapWorker(mapf func(string, string) []KeyValue, mapReply MapReply) {
-	fmt.Println("start map")
-	fmt.Println(mapReply.Filename)
 	defer MapDone(mapReply.ID, mapReply.Filename)
 	file, err := os.Open(mapReply.Filename)
 	if err != nil {
@@ -40,7 +40,6 @@ func MapWorker(mapf func(string, string) []KeyValue, mapReply MapReply) {
 	file.Close()
 	kva := mapf(mapReply.Filename, string(content))
 	filename := "mr-med-" + fmt.Sprint(mapReply.ID)
-	fmt.Println(filename)
 	f, err := os.CreateTemp("./", "temp-"+filename)
 	if err != nil {
 		log.Fatalf("cannot create temp file " + filename)
@@ -50,19 +49,53 @@ func MapWorker(mapf func(string, string) []KeyValue, mapReply MapReply) {
 		log.Fatal(err)
 	}
 	f.Write(j)
-	// enc := json.NewEncoder(f)
-	// for _, kv := range kva {
-	// 	err := enc.Encode(&kv)
-	// 	if err != nil {
-	// 		log.Fatalf("json encode fail")
-	// 	}
-	// }
 	os.Rename(f.Name(), filename)
+	f.Close()
 }
 
 func ReduceWorker(reducef func(string, []string) string, mapReply MapReply) {
-	fmt.Println("start reduce")
 	defer ReduceDone(mapReply.NReduce)
+	files, err := os.ReadDir("./")
+	if err != nil {
+		log.Fatalf("reduce file error")
+	}
+	kvs := make(map[string][]string)
+	for _, file := range files {
+		if strings.Contains(file.Name(), "mr-reduce-") {
+			s := strings.Split(file.Name(), "-")
+			if len(s) == 0 {
+				continue
+			}
+			i, err := strconv.Atoi(s[len(s)-1])
+			if err != nil {
+				log.Fatal(err)
+			}
+			if i == mapReply.NReduce {
+				content, err := os.ReadFile(file.Name())
+				if err != nil {
+					log.Fatal(err)
+				}
+				var fileKvs []KeyValue
+				err = json.Unmarshal(content, &fileKvs)
+				if err != nil {
+					log.Fatal(err)
+				}
+				for _, kv := range fileKvs {
+					kvs[kv.Key] = append(kvs[kv.Key], kv.Value)
+				}
+			}
+		}
+	}
+	f, err := os.CreateTemp("./", "temp-mr-out-"+fmt.Sprint(mapReply.NReduce))
+	defer f.Close()
+	defer os.Rename(f.Name(), "mr-out-"+fmt.Sprint(mapReply.NReduce))
+	if err != nil {
+		log.Fatal(err)
+	}
+	for k := range kvs {
+		output := reducef(k, kvs[k])
+		fmt.Fprintf(f, "%v %v\n", k, output)
+	}
 }
 
 // main/mrworker.go calls this function.
@@ -75,16 +108,14 @@ func Worker(mapf func(string, string) []KeyValue,
 		mapReply := MapReply{}
 		call("Master.GetTask", &mapRequest, &mapReply)
 		// 调用map函数
-		fmt.Println(mapReply)
 		if mapReply.Kind == 0 {
-			go MapWorker(mapf, mapReply)
+			MapWorker(mapf, mapReply)
 		} else if mapReply.Kind == 1 {
-			go ReduceWorker(reducef, mapReply)
+			ReduceWorker(reducef, mapReply)
 		} else {
-			fmt.Println("other")
 			time.Sleep(time.Second)
 		}
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond * 400)
 	}
 	// fmt.Println("worker exit")
 	// uncomment to send the Example RPC to the master.
@@ -109,7 +140,6 @@ func CallExample() {
 	call("Master.Example", &args, &reply)
 
 	// reply.Y should be 100.
-	fmt.Printf("reply.Y %v\n", reply.Y)
 }
 
 // send an RPC request to the master, wait for the response.
@@ -125,10 +155,5 @@ func call(rpcname string, args interface{}, reply interface{}) bool {
 	defer c.Close()
 
 	err = c.Call(rpcname, args, reply)
-	if err == nil {
-		return true
-	}
-
-	fmt.Println(err)
-	return false
+	return err == nil
 }

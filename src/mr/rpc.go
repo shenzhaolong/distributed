@@ -35,11 +35,12 @@ type MapRequest struct {
 }
 
 type MapReply struct {
-	Filename string
-	Succ     bool
-	Kind     int8
-	NReduce  int
-	ID       uint64
+	Filename  string
+	Succ      bool
+	Kind      int8
+	NReduce   int
+	ID        uint64
+	ReduceNum int
 }
 
 // 完成Map任务

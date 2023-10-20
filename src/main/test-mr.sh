@@ -101,7 +101,7 @@ wait ; wait
 
 echo '***' Starting map parallelism test.
 
-rm -f mr-out* mr-worker*
+rm -f mr-*
 
 timeout -k 2s 180s ../mrmaster ../pg*txt &
 sleep 1
@@ -131,7 +131,7 @@ wait ; wait
 
 echo '***' Starting reduce parallelism test.
 
-rm -f mr-out* mr-worker*
+rm -f mr-out* mr-worker* mr-reduce* mr-med*
 
 timeout -k 2s 180s ../mrmaster ../pg*txt &
 sleep 1
@@ -159,7 +159,7 @@ rm -f mr-out*
 
 echo '***' Starting crash test.
 
-rm -f mr-done
+rm -f mr-out* mr-worker* mr-reduce* mr-med*
 (timeout -k 2s 180s ../mrmaster ../pg*txt ; touch mr-done ) &
 sleep 1
 

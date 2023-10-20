@@ -61,7 +61,6 @@ func (m *Master) allocWork(ID int) (string, uint64, bool) {
 	}
 	m.mapAlloc[filename] = 0
 	delete(m.mapWork, filename)
-	fmt.Println("alloc work: " + filename + ", ID: " + fmt.Sprint(m.mapID))
 	return filename, m.mapID, true
 }
 
@@ -90,7 +89,6 @@ func (m *Master) getReduce(reduceID *int) bool {
 			break
 		}
 	}
-	fmt.Println("get reduce number: " + fmt.Sprint(*reduceID))
 	return *reduceID != -1
 }
 
@@ -110,11 +108,16 @@ func (m *Master) listenMapWork(filename string) {
 }
 
 func (m *Master) shuffle() {
+	m.mapMux.Lock()
+	defer m.mapMux.Unlock()
+	if m.isShuffle {
+		return
+	}
 	files, err := os.ReadDir("./")
 	if err != nil {
 		log.Fatalf("shuffle error")
 	}
-	fmt.Println("start shuffle")
+	mapKvs := make(map[int][]KeyValue)
 	for _, file := range files {
 		if strings.Contains(file.Name(), "mr-med-") {
 			content, err := os.ReadFile(file.Name())
@@ -128,21 +131,34 @@ func (m *Master) shuffle() {
 			}
 			for _, kv := range kvs {
 				idx := ihash(kv.Key)%m.nReduce + 1
-				f, err := os.OpenFile("mr-reduce-"+fmt.Sprint(idx), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-				if err != nil {
-					log.Fatal(err)
-				}
-				b, err := json.Marshal(kv)
-				if err != nil {
-					log.Fatal(err)
-				}
-				f.Write(b)
-				f.Close()
+				mapKvs[idx] = append(mapKvs[idx], kv)
+				// f, err := os.OpenFile("mr-reduce-"+fmt.Sprint(idx), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+				// if err != nil {
+				// 	log.Fatal(err)
+				// }
+				// b, err := json.Marshal(&kv)
+				// if err != nil {
+				// 	log.Fatal(err)
+				// }
+
+				// f.Write(b)
+				// f.Close()
 			}
 		}
 	}
+	for k := range mapKvs {
+		f, err := os.OpenFile("mr-reduce-"+fmt.Sprint(k), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+		b, err := json.Marshal(mapKvs[k])
+		if err != nil {
+			log.Fatal(err)
+		}
+		f.Write(b)
+		f.Close()
+	}
 	m.isShuffle = true
-	fmt.Println("end shuffle")
 }
 
 func (m *Master) listenReduceWork(reduceID int) {
@@ -183,6 +199,7 @@ func (m *Master) GetTask(args *MapRequest, reply *MapReply) error {
 		reply.Kind = 101
 		reply.Succ = true
 		var reduceID int = -1
+		reply.ReduceNum = m.nReduce
 		if m.getReduce(&reduceID) {
 			reply.Kind = 1
 			reply.NReduce = reduceID
@@ -220,7 +237,6 @@ func (m *Master) server() {
 	//l, e := net.Listen("tcp", ":1234")
 	sockname := masterSock()
 	os.Remove(sockname)
-	fmt.Println("server name " + sockname)
 	l, e := net.Listen("unix", sockname)
 	if e != nil {
 		log.Fatal("listen error:", e)
@@ -248,7 +264,6 @@ func MakeMaster(files []string, nReduce int) *Master {
 	m.fileNum = len(files)
 	m.mapAlloc = make(map[string]int)
 	m.mapWork = make(map[string]int)
-	fmt.Println("file size: " + fmt.Sprint(m.fileNum))
 	m.isShuffle = false
 	m.nReduce = nReduce
 	m.reduceDone = nReduce
@@ -259,7 +274,6 @@ func MakeMaster(files []string, nReduce int) *Master {
 	m.mapMux.Unlock()
 	for _, filename := range files {
 		m.addWork(filename)
-		fmt.Println("add work: " + filename)
 	}
 
 	m.server()
