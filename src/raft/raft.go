@@ -41,6 +41,20 @@ type ApplyMsg struct {
 	CommandIndex int
 }
 
+type AppendEntries struct {
+	Term         int
+	LeaderId     int
+	PrevLogIndex int
+	PrevLogTerm  int
+	Entries      []byte
+	LeaderCommit int
+}
+
+type Log struct {
+	Term    int
+	Command interface{}
+}
+
 // A Go object implementing a single Raft peer.
 type Raft struct {
 	mu        sync.Mutex          // Lock to protect shared access to this peer's state
@@ -52,7 +66,16 @@ type Raft struct {
 	// Your data here (2A, 2B, 2C).
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
+	// 所有服务器都有的持久的状态
+	currentTerm int
+	votedFor    int
+	log         []Log
 
+	// 所有服务器都有的易变的状态
+	commitIndex int
+	lastApplied int
+
+	// leader才有的状态
 }
 
 // return currentTerm and whether this server
@@ -103,12 +126,18 @@ func (rf *Raft) readPersist(data []byte) {
 // field names must start with capital letters!
 type RequestVoteArgs struct {
 	// Your data here (2A, 2B).
+	Term         int // 候选者的任期号
+	CandidateId  int // 候选者的服务器编号
+	LastLogIndex int // 候选者的最后一个日志条目的索引号
+	LastLogTerm  int // 候选者的最后一个日志条目的任期号
 }
 
 // example RequestVote RPC reply structure.
 // field names must start with capital letters!
 type RequestVoteReply struct {
 	// Your data here (2A).
+	Term        int // 返回的当前的任期号
+	VoteGranted int // 是否同意投票
 }
 
 // example RequestVote RPC handler.
