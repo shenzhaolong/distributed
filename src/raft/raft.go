@@ -21,7 +21,10 @@ import (
 	"6824/labrpc"
 	"sync"
 	"sync/atomic"
+	"time"
 )
+
+var NoLeaderTime int = 3	// 超过该时间无心跳，进入canditate状态开启选举
 
 // import "bytes"
 // import "../labgob"
@@ -41,16 +44,21 @@ type ApplyMsg struct {
 	CommandIndex int
 }
 
-type AppendEntries struct {
+type AppendEntriesArgs struct {
 	Term         int
 	LeaderId     int
 	PrevLogIndex int
 	PrevLogTerm  int
-	Entries      []byte
+	Entries      []Entry
 	LeaderCommit int
 }
 
-type Log struct {
+type AppendEntriesReply struct {
+	Term	int
+	Success bool
+}
+
+type Entry struct {
 	Term    int
 	Command interface{}
 }
@@ -69,11 +77,18 @@ type Raft struct {
 	// 所有服务器都有的持久的状态
 	currentTerm int
 	votedFor    int
-	log         []Log
+	Entries     []Entry
+
+	leaderId 	int
+	// 1 follower 2 canadiate 3 leader
+	peerKind	int
 
 	// 所有服务器都有的易变的状态
 	commitIndex int
 	lastApplied int
+
+	lastLeaderTime	int64	// 上次收到心跳或者appendEntity的时间
+
 
 	// leader才有的状态
 }
@@ -85,6 +100,8 @@ func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isleader bool
 	// Your code here (2A).
+	term = rf.currentTerm
+	isleader = rf.leaderId == rf.me
 	return term, isleader
 }
 
@@ -143,6 +160,27 @@ type RequestVoteReply struct {
 // example RequestVote RPC handler.
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if  l:= len(rf.Entries); args.Term >= rf.currentTerm && 
+	(rf.votedFor == -1 || rf.votedFor == args.CandidateId) &&
+	(l == 0 || (l <= args.LastLogIndex && rf.Entries[l - 1].Term <= args.LastLogTerm)) {
+		reply.VoteGranted = 1
+	} else {
+		reply.VoteGranted = 0
+	}
+	reply.Term = rf.currentTerm
+}
+
+func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
+	if len(args.Entries) == 0 {	// 心跳包
+		reply.success = true
+		if args.Term >= rf.currentTerm {
+			rf.currentTerm = args.Term
+			rf.lastLeaderTime = time.Now().Unix()	// 更新最后一次收到的时间
+		}
+		reply.Term = rf.currentTerm
+	}
 }
 
 // example code to send a RequestVote RPC to a server.
@@ -174,6 +212,11 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 // the struct itself.
 func (rf *Raft) sendRequestVote(server int, args *RequestVoteArgs, reply *RequestVoteReply) bool {
 	ok := rf.peers[server].Call("Raft.RequestVote", args, reply)
+	return ok
+}
+
+func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) bool {
+	ok := rf.peers[server].Call("Raft.AppendEntity", args, reply)
 	return ok
 }
 
@@ -235,6 +278,18 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.me = me
 
 	// Your initialization code here (2A, 2B, 2C).
+	rf.peerKind = 1	// 初始化是follower
+	rf.lastLeaderTime = time.Now().Unix()	// 初始化开启选举定时器
+	go func() {
+		for {
+			timeNow := time.Now().Unix()
+			if timeNow - rf.lastLeaderTime >= NoLeaderTime {
+				// 开启选举
+			}
+			time.Sleep(time.Millisecond * 100)	// 100ms检测一次
+		}
+	}()
+	
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
