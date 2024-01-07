@@ -24,7 +24,8 @@ import (
 	"time"
 )
 
-var NoLeaderTime int = 3	// 超过该时间无心跳，进入canditate状态开启选举
+var NoLeaderTime int = 3	//s,超过该时间无心跳，进入canditate状态开启选举
+var LeaderHeartTime int = 1500	//ms,每一段时间发送心跳
 
 // import "bytes"
 // import "../labgob"
@@ -282,9 +283,51 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.lastLeaderTime = time.Now().Unix()	// 初始化开启选举定时器
 	go func() {
 		for {
-			timeNow := time.Now().Unix()
-			if timeNow - rf.lastLeaderTime >= NoLeaderTime {
-				// 开启选举
+			{
+				rf.mu.Lock()
+				defer rf.mu.Unlock()
+				if rf.peerKind == 1 {	
+					timeNow := time.Now().Unix()
+					if timeNow - rf.lastLeaderTime >= NoLeaderTime {
+						// 开启选举
+						rf.peerkind = 2
+					}
+				}
+				if rf.peerKind == 2 {
+
+
+				} else if rf.peerKind == 3 {
+					for i := 0; i < len(peers); i++ {
+						if i != me {
+							var l int = len(rf.Entries)
+							appendEntriesArgs := AppendEntriesArgs {
+								Term: rf.currentTerm,
+								LeaderId: me,
+								PrevLogIndex: l - 1,
+								Entries: nil,
+								LeaderCommit = rf.commitIndex
+							}
+							if l == 0 {
+								appendEntriesArgs.PrevLogTerm = 0
+							} else {
+								appendEntriesArgs.PrevLogTerm = rf.Entries[l - 1].Term
+							}
+							appendEntriesReply := AppendEntriesReply {}
+							go func() {
+								ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
+								if ok {
+									rf.mu.Lock()
+									defer rf.mu.Unlock()
+									if !appendEntriesReply.ok && rf.currentTerm < appendEntriesReply.Term {
+										rf.currentTerm = appendEntriesReply.Term
+										rf.peerKind = 1
+									}
+								}
+							}()
+						}
+					}
+					time.Sleep(time.Millisecond * LeaderHeartTime)
+				}
 			}
 			time.Sleep(time.Millisecond * 100)	// 100ms检测一次
 		}
