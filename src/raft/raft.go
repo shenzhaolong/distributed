@@ -170,7 +170,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	log.Println("node " + strconv.Itoa(rf.me) + " get RequestVote from " + strconv.Itoa(args.CandidateId) +
-		" with term" + strconv.Itoa(args.Term) + ", my team:" + strconv.Itoa(rf.currentTerm))
+		" with term" + strconv.Itoa(args.Term) + ", my term:" + strconv.Itoa(rf.currentTerm))
 	if l := len(rf.Entries); args.Term > rf.currentTerm ||
 		(args.Term == rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) &&
 			(l == 0 || (l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm)) {
@@ -278,14 +278,17 @@ func (rf *Raft) killed() bool {
 func (rf *Raft) startElection() {
 
 	// 等待0-500ms随机时间后开启选举
-	rand.Seed(time.Now().UnixNano())
+	rand.NewSource(time.Now().UnixNano())
 	electionWaitTime := rand.Intn(500)
 	log.Println(strconv.Itoa(rf.me) + " start election " + strconv.Itoa(rf.currentTerm) + " election wait time " + strconv.Itoa(electionWaitTime))
+	rf.mu.Lock()
+	electionTerm := rf.currentTerm // 缓存当前竞选的任期
+	rf.mu.Unlock()
 	time.Sleep(time.Duration(electionWaitTime) * time.Millisecond)
 
 	rf.mu.Lock()
 
-	rf.currentTerm += 1
+	rf.currentTerm = electionTerm + 1
 	rf.peerKind = 2
 	l := len(rf.Entries)
 	lastLogTerm := 0
@@ -293,7 +296,7 @@ func (rf *Raft) startElection() {
 		lastLogTerm = rf.Entries[l-1].Term
 	}
 	rf.votedFor = rf.me
-	needWaitNum := len(rf.peers)
+	needWaitNum := int((len(rf.peers) + 1) / 2)
 	agreeNum := 1
 	agreeNumMu := sync.Mutex{}
 	peerNum := len(rf.peers)
@@ -322,7 +325,7 @@ func (rf *Raft) startElection() {
 							agreeNumMu.Lock()
 							agreeNum += 1
 							agreeNumMu.Unlock()
-							log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + ", agree " + strconv.Itoa(i))
+							log.Println("node " + strconv.Itoa(rf.me) + " get term " + strconv.Itoa(rf.currentTerm) + ", agree " + strconv.Itoa(i))
 						} else if rep.Term > rf.currentTerm {
 							rf.mu.Lock()
 							rf.currentTerm = rep.Term
@@ -331,7 +334,7 @@ func (rf *Raft) startElection() {
 						}
 						break
 					} else {
-						log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + ", network outtime")
+						log.Println("node " + strconv.Itoa(rf.me) + " term " + strconv.Itoa(rf.currentTerm) + ", network outtime from " + strconv.Itoa(i))
 						rf.mu.Lock()
 						if rf.peerKind != 2 {
 							rf.mu.Unlock()
@@ -360,18 +363,18 @@ func (rf *Raft) startElection() {
 			log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + " success")
 			rf.mu.Unlock()
 			agreeNumMu.Unlock()
-			break
+			return
 		} else {
 			rf.mu.Lock()
 			if rf.peerKind != 2 {
 				rf.mu.Unlock()
 				agreeNumMu.Unlock()
-				break
+				return
 			} else {
 				rf.mu.Unlock()
 			}
 			agreeNumMu.Unlock()
-			time.Sleep(time.Duration(50) * time.Millisecond)
+			time.Sleep(time.Duration(5) * time.Millisecond)
 
 			if time.Now().Unix()-startTime >= 500 {
 				log.Println("node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout")
