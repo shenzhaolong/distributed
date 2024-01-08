@@ -19,13 +19,16 @@ package raft
 
 import (
 	"6824/labrpc"
+	"log"
+	"math/rand"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
 )
 
-var NoLeaderTime int = 3	//s,超过该时间无心跳，进入canditate状态开启选举
-var LeaderHeartTime int = 1500	//ms,每一段时间发送心跳
+var NoLeaderTime int64 = 3     //s,超过该时间无心跳，进入canditate状态开启选举
+var LeaderHeartTime int = 1500 //ms,每一段时间发送心跳
 
 // import "bytes"
 // import "../labgob"
@@ -55,7 +58,7 @@ type AppendEntriesArgs struct {
 }
 
 type AppendEntriesReply struct {
-	Term	int
+	Term    int
 	Success bool
 }
 
@@ -80,16 +83,15 @@ type Raft struct {
 	votedFor    int
 	Entries     []Entry
 
-	leaderId 	int
+	leaderId int
 	// 1 follower 2 canadiate 3 leader
-	peerKind	int
+	peerKind int
 
 	// 所有服务器都有的易变的状态
 	commitIndex int
 	lastApplied int
 
-	lastLeaderTime	int64	// 上次收到心跳或者appendEntity的时间
-
+	lastLeaderTime int64 // 上次收到心跳或者appendEntity的时间
 
 	// leader才有的状态
 }
@@ -101,8 +103,12 @@ func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isleader bool
 	// Your code here (2A).
+	rf.mu.Lock()
+
 	term = rf.currentTerm
-	isleader = rf.leaderId == rf.me
+	isleader = rf.peerKind == 3
+
+	rf.mu.Unlock()
 	return term, isleader
 }
 
@@ -163,10 +169,13 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	if  l:= len(rf.Entries); args.Term >= rf.currentTerm && 
-	(rf.votedFor == -1 || rf.votedFor == args.CandidateId) &&
-	(l == 0 || (l <= args.LastLogIndex && rf.Entries[l - 1].Term <= args.LastLogTerm)) {
+	log.Println("node " + strconv.Itoa(rf.me) + " get RequestVote from " + strconv.Itoa(args.CandidateId) +
+		" with term" + strconv.Itoa(args.Term) + ", my team:" + strconv.Itoa(rf.currentTerm))
+	if l := len(rf.Entries); args.Term > rf.currentTerm ||
+		(args.Term == rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) &&
+			(l == 0 || (l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm)) {
 		reply.VoteGranted = 1
+		rf.votedFor = args.CandidateId
 	} else {
 		reply.VoteGranted = 0
 	}
@@ -174,13 +183,17 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 }
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
-	if len(args.Entries) == 0 {	// 心跳包
-		reply.success = true
+	if len(args.Entries) == 0 { // 心跳包
+		reply.Success = true
+		rf.mu.Lock()
 		if args.Term >= rf.currentTerm {
 			rf.currentTerm = args.Term
-			rf.lastLeaderTime = time.Now().Unix()	// 更新最后一次收到的时间
+			rf.lastLeaderTime = time.Now().Unix() // 更新最后一次收到的时间
+			rf.peerKind = 1
+			rf.votedFor = -1
 		}
 		reply.Term = rf.currentTerm
+		rf.mu.Unlock()
 	}
 }
 
@@ -262,6 +275,122 @@ func (rf *Raft) killed() bool {
 	return z == 1
 }
 
+func (rf *Raft) startElection() {
+
+	// 等待0-500ms随机时间后开启选举
+	rand.Seed(time.Now().UnixNano())
+	electionWaitTime := rand.Intn(500)
+	log.Println(strconv.Itoa(rf.me) + " start election " + strconv.Itoa(rf.currentTerm) + " election wait time " + strconv.Itoa(electionWaitTime))
+	time.Sleep(time.Duration(electionWaitTime) * time.Millisecond)
+
+	rf.mu.Lock()
+
+	rf.currentTerm += 1
+	rf.peerKind = 2
+	l := len(rf.Entries)
+	lastLogTerm := 0
+	if l > 0 {
+		lastLogTerm = rf.Entries[l-1].Term
+	}
+	rf.votedFor = rf.me
+	needWaitNum := len(rf.peers)
+	agreeNum := 1
+	agreeNumMu := sync.Mutex{}
+	peerNum := len(rf.peers)
+	startTime := time.Now().Unix()
+	log.Println("node " + strconv.Itoa(rf.me) + " start term " + strconv.Itoa(rf.currentTerm) + " election")
+
+	rf.mu.Unlock()
+
+	for i := 0; i < peerNum; i++ {
+		if i != rf.me {
+			go func(i int, startTime int64) {
+				log.Println("node " + strconv.Itoa(rf.me) + " send RequestVote to " + strconv.Itoa(i) + " term " + strconv.Itoa(rf.currentTerm))
+				for {
+					req := RequestVoteArgs{
+						Term:         rf.currentTerm,
+						CandidateId:  rf.me,
+						LastLogIndex: l - 1,
+						LastLogTerm:  lastLogTerm,
+					}
+					rep := RequestVoteReply{}
+					ok := rf.sendRequestVote(i, &req, &rep)
+					if ok {
+						log.Println("node " + strconv.Itoa(rf.me) + " get term " + strconv.Itoa(rf.currentTerm) + ", node " +
+							strconv.Itoa(i) + " reply:" + strconv.Itoa(rep.VoteGranted))
+						if rep.VoteGranted == 1 {
+							agreeNumMu.Lock()
+							agreeNum += 1
+							agreeNumMu.Unlock()
+							log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + ", agree " + strconv.Itoa(i))
+						} else if rep.Term > rf.currentTerm {
+							rf.mu.Lock()
+							rf.currentTerm = rep.Term
+							rf.peerKind = 1
+							rf.mu.Unlock()
+						}
+						break
+					} else {
+						log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + ", network outtime")
+						rf.mu.Lock()
+						if rf.peerKind != 2 {
+							rf.mu.Unlock()
+							break
+						} else {
+							rf.mu.Unlock()
+						}
+					}
+					// 选举超时结束进程
+					if time.Now().Unix()-startTime > 500 {
+						log.Println("node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout")
+						break
+					}
+					// 需要重发时等待10ms
+					time.Sleep(time.Duration(10) * time.Millisecond)
+				}
+			}(i, startTime)
+		}
+	}
+
+	for {
+		agreeNumMu.Lock()
+		if agreeNum >= needWaitNum {
+			rf.mu.Lock()
+			rf.peerKind = 3
+			log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + " success")
+			rf.mu.Unlock()
+			agreeNumMu.Unlock()
+			break
+		} else {
+			rf.mu.Lock()
+			if rf.peerKind != 2 {
+				rf.mu.Unlock()
+				agreeNumMu.Unlock()
+				break
+			} else {
+				rf.mu.Unlock()
+			}
+			agreeNumMu.Unlock()
+			time.Sleep(time.Duration(50) * time.Millisecond)
+
+			if time.Now().Unix()-startTime >= 500 {
+				log.Println("node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout")
+				rf.mu.Lock()
+				if rf.peerKind != 2 {
+					rf.mu.Unlock()
+					return
+				} else {
+					rf.mu.Unlock()
+					rf.startElection()
+				}
+				break
+			}
+		}
+
+	}
+
+}
+
 // the service or tester wants to create a Raft server. the ports
 // of all the Raft servers (including this one) are in peers[]. this
 // server's port is peers[me]. all the servers' peers[] arrays
@@ -277,62 +406,74 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.peers = peers
 	rf.persister = persister
 	rf.me = me
+	rf.currentTerm = 1
+	rf.votedFor = -1
 
 	// Your initialization code here (2A, 2B, 2C).
-	rf.peerKind = 1	// 初始化是follower
-	rf.lastLeaderTime = time.Now().Unix()	// 初始化开启选举定时器
+	rf.peerKind = 1                       // 初始化是follower
+	rf.lastLeaderTime = time.Now().Unix() // 初始化开启选举定时器
 	go func() {
 		for {
 			{
 				rf.mu.Lock()
-				defer rf.mu.Unlock()
-				if rf.peerKind == 1 {	
+				peerKind := rf.peerKind
+				lastLeaderTime := rf.lastLeaderTime
+				// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
+				rf.mu.Unlock()
+				if peerKind == 1 {
 					timeNow := time.Now().Unix()
-					if timeNow - rf.lastLeaderTime >= NoLeaderTime {
+					if timeNow-lastLeaderTime >= NoLeaderTime {
 						// 开启选举
-						rf.peerkind = 2
+						peerKind = 2
+						log.Println("time out, start election, " + strconv.Itoa(me))
 					}
 				}
-				if rf.peerKind == 2 {
-
-
-				} else if rf.peerKind == 3 {
-					for i := 0; i < len(peers); i++ {
+				if peerKind == 2 {
+					rf.startElection()
+				}
+				if peerKind == 3 {
+					rf.mu.Lock()
+					peerNum := len(rf.peers)
+					rf.mu.Unlock()
+					for i := 0; i < peerNum; i++ {
 						if i != me {
+							rf.mu.Lock()
 							var l int = len(rf.Entries)
-							appendEntriesArgs := AppendEntriesArgs {
-								Term: rf.currentTerm,
-								LeaderId: me,
-								PrevLogIndex: l - 1,
-								Entries: nil,
-								LeaderCommit = rf.commitIndex
-							}
-							if l == 0 {
-								appendEntriesArgs.PrevLogTerm = 0
-							} else {
-								appendEntriesArgs.PrevLogTerm = rf.Entries[l - 1].Term
-							}
-							appendEntriesReply := AppendEntriesReply {}
-							go func() {
+							rf.mu.Unlock()
+							go func(i int) {
+								appendEntriesArgs := AppendEntriesArgs{
+									Term:         rf.currentTerm,
+									LeaderId:     me,
+									PrevLogIndex: l - 1,
+									Entries:      nil,
+									LeaderCommit: rf.commitIndex,
+								}
+								if l == 0 {
+									appendEntriesArgs.PrevLogTerm = 0
+								} else {
+									appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
+								}
+								appendEntriesReply := AppendEntriesReply{}
+								log.Println("leader Id: " + strconv.Itoa(me) + " send heart to " + strconv.Itoa(i))
+
 								ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
 								if ok {
 									rf.mu.Lock()
-									defer rf.mu.Unlock()
-									if !appendEntriesReply.ok && rf.currentTerm < appendEntriesReply.Term {
+									if rf.currentTerm < appendEntriesReply.Term {
 										rf.currentTerm = appendEntriesReply.Term
 										rf.peerKind = 1
 									}
+									rf.mu.Unlock()
 								}
-							}()
+							}(i)
 						}
 					}
-					time.Sleep(time.Millisecond * LeaderHeartTime)
+					time.Sleep(time.Millisecond * time.Duration(LeaderHeartTime))
 				}
 			}
-			time.Sleep(time.Millisecond * 100)	// 100ms检测一次
+			time.Sleep(time.Millisecond * 100) // 100ms检测一次
 		}
 	}()
-	
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
