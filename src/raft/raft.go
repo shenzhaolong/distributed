@@ -193,13 +193,11 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		log.Println("node " + strconv.Itoa(rf.me) + " get heart from " + strconv.Itoa(args.LeaderId) +
 			", my term is " + strconv.Itoa(rf.currentTerm) + " and heart term is " + strconv.Itoa(args.Term) +
 			", my peerkind is " + strconv.Itoa(rf.peerKind))
-		if args.Term > rf.currentTerm {
+		if args.Term >= rf.currentTerm {
 			rf.currentTerm = args.Term
 			rf.lastLeaderTime = time.Now().Unix() // 更新最后一次收到的时间
 			rf.peerKind = 1
 			rf.votedFor = -1
-		} else if args.Term == rf.currentTerm {
-			rf.lastLeaderTime = time.Now().Unix() // 更新最后一次收到的时间
 		}
 		reply.Term = rf.currentTerm
 		rf.mu.Unlock()
@@ -293,13 +291,18 @@ func (rf *Raft) startElection() {
 	electionWaitTime := rand.Intn(200)
 	rf.mu.Lock()
 	log.Println(strconv.Itoa(rf.me) + " start current term " + strconv.Itoa(rf.currentTerm) + " election wait time " + strconv.Itoa(electionWaitTime))
-	electionTerm := rf.currentTerm // 缓存当前竞选的任期
+	electionTerm := rf.currentTerm      // 缓存当前竞选的任期
+	lastLeaderTime := rf.lastLeaderTime // 选举开始前要是有更新lastLeader表示已经再收到心跳
 	rf.votedFor = -1
 	rf.mu.Unlock()
 	time.Sleep(time.Duration(electionWaitTime) * time.Millisecond)
 
 	rf.mu.Lock()
 
+	if rf.lastLeaderTime != lastLeaderTime {
+		rf.mu.Unlock()
+		return
+	}
 	rf.currentTerm = electionTerm + 1
 	rf.peerKind = 2
 	l := len(rf.Entries)
@@ -338,7 +341,6 @@ func (rf *Raft) startElection() {
 							agreeNumMu.Lock()
 							agreeNum += 1
 							agreeNumMu.Unlock()
-							log.Println("node " + strconv.Itoa(rf.me) + " get term " + strconv.Itoa(rf.currentTerm) + ", agree " + strconv.Itoa(i))
 						} else if rep.Term > rf.currentTerm {
 							rf.mu.Lock()
 							rf.currentTerm = rep.Term
