@@ -1,0 +1,399 @@
+Test (2A): initial election ...
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 2 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 1 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:05 node 0 check heart timeout, timeNow is 1705293545, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 1 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 2 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:06 node 0 check heart timeout, timeNow is 1705293546, lastLeaderTime is 1705293545
+2024/01/15 12:39:07 node 0 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293545
+2024/01/15 12:39:07 time out, start election, 0
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293545
+2024/01/15 12:39:07 time out, start election, 1
+2024/01/15 12:39:07 1 start current term 1 election wait time 103
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293545
+2024/01/15 12:39:07 time out, start election, 2
+2024/01/15 12:39:07 0 start current term 1 election wait time 17
+2024/01/15 12:39:07 2 start current term 1 election wait time 38
+2024/01/15 12:39:07 node 0 start term 2 election
+2024/01/15 12:39:07 node 0 send RequestVote to 2 term 2
+2024/01/15 12:39:07 node 0 send RequestVote to 1 term 2
+2024/01/15 12:39:07 node 2 get RequestVote from 0 with term 2, my term:1 and my votedfor is -1
+2024/01/15 12:39:07 node 0 get term 2, node 2 reply:1
+2024/01/15 12:39:07 node 0 exit send 2
+2024/01/15 12:39:07 node 1 get RequestVote from 0 with term 2, my term:1 and my votedfor is -1
+2024/01/15 12:39:07 node 0 get term 2, node 1 reply:1
+2024/01/15 12:39:07 node 0 exit send 1
+2024/01/15 12:39:07 node 0 get term2 success
+2024/01/15 12:39:07 node 0 end election for term 1
+2024/01/15 12:39:07 node 0 start term 2 heart
+2024/01/15 12:39:07 leader Id: 0 send heart to 2
+2024/01/15 12:39:07 leader Id: 0 send heart to 1
+2024/01/15 12:39:07 node 2 get heart from 0, my term is 1 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:07 node 1 get heart from 0, my term is 1 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:07 node 2 end election for term 1
+2024/01/15 12:39:07 node 1 end election for term 1
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 1 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:07 node 2 check heart timeout, timeNow is 1705293547, lastLeaderTime is 1705293547
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293547
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293547
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293547
+2024/01/15 12:39:08 node 0 start term 2 heart
+2024/01/15 12:39:08 leader Id: 0 send heart to 2
+2024/01/15 12:39:08 leader Id: 0 send heart to 1
+2024/01/15 12:39:08 node 1 get heart from 0, my term is 2 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:08 node 2 get heart from 0, my term is 2 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 2 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:08 node 1 check heart timeout, timeNow is 1705293548, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293548
+2024/01/15 12:39:09 node 0 start term 2 heart
+2024/01/15 12:39:09 leader Id: 0 send heart to 2
+2024/01/15 12:39:09 leader Id: 0 send heart to 1
+2024/01/15 12:39:09 node 2 get heart from 0, my term is 2 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:09 node 1 get heart from 0, my term is 2 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+  ... Passed --   4.5  3    8    1856    0
+Test (2A): election after network failure ...
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 0 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 0 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 0 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 2 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:09 node 1 check heart timeout, timeNow is 1705293549, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 1 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 0 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:10 node 2 check heart timeout, timeNow is 1705293550, lastLeaderTime is 1705293549
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293549
+2024/01/15 12:39:11 time out, start election, 0
+2024/01/15 12:39:11 0 start current term 1 election wait time 100
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293549
+2024/01/15 12:39:11 time out, start election, 2
+2024/01/15 12:39:11 2 start current term 1 election wait time 148
+2024/01/15 12:39:11 node 1 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293549
+2024/01/15 12:39:11 time out, start election, 1
+2024/01/15 12:39:11 1 start current term 1 election wait time 49
+2024/01/15 12:39:11 node 1 start term 2 election
+2024/01/15 12:39:11 node 1 send RequestVote to 2 term 2
+2024/01/15 12:39:11 node 1 send RequestVote to 0 term 2
+2024/01/15 12:39:11 node 2 get RequestVote from 1 with term 2, my term:1 and my votedfor is -1
+2024/01/15 12:39:11 node 0 get RequestVote from 1 with term 2, my term:1 and my votedfor is -1
+2024/01/15 12:39:11 node 1 get term 2, node 2 reply:1
+2024/01/15 12:39:11 node 1 exit send 2
+2024/01/15 12:39:11 node 1 get term 2, node 0 reply:1
+2024/01/15 12:39:11 node 1 exit send 0
+2024/01/15 12:39:11 node 1 get term2 success
+2024/01/15 12:39:11 node 1 end election for term 1
+2024/01/15 12:39:11 node 1 start term 2 heart
+2024/01/15 12:39:11 leader Id: 1 send heart to 2
+2024/01/15 12:39:11 leader Id: 1 send heart to 0
+2024/01/15 12:39:11 node 2 get heart from 1, my term is 1 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:11 node 0 get heart from 1, my term is 1 and heart term is 2, my peerkind is 1
+2024/01/15 12:39:11 node 0 end election for term 1
+2024/01/15 12:39:11 node 2 end election for term 1
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 2A reelects begin check leader is  1
+
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 2 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:11 node 0 check heart timeout, timeNow is 1705293551, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 1 start term 2 heart
+2024/01/15 12:39:12 leader Id: 1 send heart to 2
+2024/01/15 12:39:12 leader Id: 1 send heart to 0
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 2 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:12 node 0 check heart timeout, timeNow is 1705293552, lastLeaderTime is 1705293551
+2024/01/15 12:39:13 node 2 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293551
+2024/01/15 12:39:13 time out, start election, 2
+2024/01/15 12:39:13 2 start current term 2 election wait time 196
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293551
+2024/01/15 12:39:13 time out, start election, 0
+2024/01/15 12:39:13 0 start current term 2 election wait time 191
+2024/01/15 12:39:13 node 2 start term 3 election
+2024/01/15 12:39:13 node 2 send RequestVote to 1 term 3
+2024/01/15 12:39:13 node 2 send RequestVote to 0 term 3
+2024/01/15 12:39:13 node 0 get RequestVote from 2 with term 3, my term:2 and my votedfor is -1
+2024/01/15 12:39:13 node 2 get term 3, node 0 reply:1
+2024/01/15 12:39:13 node 2 exit send 0
+2024/01/15 12:39:13 node 2 get term3 success
+2024/01/15 12:39:13 node 2 end election for term 2
+2024/01/15 12:39:13 node 2 start term 3 heart
+2024/01/15 12:39:13 leader Id: 2 send heart to 1
+2024/01/15 12:39:13 leader Id: 2 send heart to 0
+2024/01/15 12:39:13 node 0 get heart from 2, my term is 2 and heart term is 3, my peerkind is 1
+2024/01/15 12:39:13 node 0 end election for term 2
+2024/01/15 12:39:13 node 1 start term 2 heart
+2024/01/15 12:39:13 leader Id: 1 send heart to 2
+2024/01/15 12:39:13 leader Id: 1 send heart to 0
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:13 Leader 2 send to 1 heart fail
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:13 2A reelects again check leader is  2
+
+2024/01/15 12:39:13 node 0 check heart timeout, timeNow is 1705293553, lastLeaderTime is 1705293553
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293553
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293553
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293553
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293553
+2024/01/15 12:39:14 node 2 start term 3 heart
+2024/01/15 12:39:14 leader Id: 2 send heart to 1
+2024/01/15 12:39:14 leader Id: 2 send heart to 0
+2024/01/15 12:39:14 node 1 get heart from 2, my term is 2 and heart term is 3, my peerkind is 3
+2024/01/15 12:39:14 node 0 get heart from 2, my term is 3 and heart term is 3, my peerkind is 1
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 Leader 1 send to 0 heart fail
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+
+2024/01/15 12:39:14 2A reelects third check leader is  2
+2024/01/15 12:39:14 node 1 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:14 node 0 check heart timeout, timeNow is 1705293554, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 2 start term 3 heart
+2024/01/15 12:39:15 leader Id: 2 send heart to 1
+2024/01/15 12:39:15 leader Id: 2 send heart to 0
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 Leader 2 send to 0 heart fail
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 1 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:15 node 0 check heart timeout, timeNow is 1705293555, lastLeaderTime is 1705293554
+2024/01/15 12:39:16 node 1 check heart timeout, timeNow is 1705293556, lastLeaderTime is 1705293554
+2024/01/15 12:39:16 time out, start election, 1
+2024/01/15 12:39:16 1 start current term 3 election wait time 96
+2024/01/15 12:39:16 node 0 check heart timeout, timeNow is 1705293556, lastLeaderTime is 1705293554
+2024/01/15 12:39:16 time out, start election, 0
+2024/01/15 12:39:16 0 start current term 3 election wait time 171
+2024/01/15 12:39:16 node 1 start term 4 election
+2024/01/15 12:39:16 node 1 send RequestVote to 2 term 4
+2024/01/15 12:39:16 node 1 send RequestVote to 0 term 4
+2024/01/15 12:39:16 node 0 start term 4 election
+2024/01/15 12:39:16 node 0 send RequestVote to 2 term 4
+2024/01/15 12:39:16 node 0 send RequestVote to 1 term 4
+0和1同时开启选举，第一次选举失败
+2024/01/15 12:39:16 node 2 start term 3 heart
+2024/01/15 12:39:16 leader Id: 2 send heart to 1
+2024/01/15 12:39:16 leader Id: 2 send heart to 0
+2024/01/15 12:39:16 node 1 term 4, network from 2
+2024/01/15 12:39:16 Leader 2 send to 0 heart fail
+2024/01/15 12:39:17 Leader 1 send to 2 heart fail
+2024/01/15 12:39:17 Leader 1 send to 0 heart fail
+2024/01/15 12:39:17 node 2 start term 3 heart
+2024/01/15 12:39:17 leader Id: 2 send heart to 1
+2024/01/15 12:39:17 leader Id: 2 send heart to 0
+2024/01/15 12:39:17 Leader 2 send to 1 heart fail
+2024/01/15 12:39:18 Leader 1 send to 2 heart fail
+2024/01/15 12:39:18 node 2 start term 3 heart
+2024/01/15 12:39:18 leader Id: 2 send heart to 1
+2024/01/15 12:39:18 leader Id: 2 send heart to 0
+2024/01/15 12:39:18 node 0 term 4, network from 1
+2024/01/15 12:39:18 node 1 get RequestVote from 0 with term 4, my term:4 and my votedfor is 1
+2024/01/15 12:39:18 node 0 get term 4, node 1 reply:0
+2024/01/15 12:39:18 node 0 exit send 1
+2024/01/15 12:39:18 node 2 term 3, network from 1
+2024/01/15 12:39:18 node 2 election exit with peer kind 3
+2024/01/15 12:39:18 node 2 exit send 1
+2024/01/15 12:39:19 Leader 2 send to 1 heart fail
+2024/01/15 12:39:19 Leader 2 send to 1 heart fail
+2024/01/15 12:39:19 node 2 start term 3 heart
+2024/01/15 12:39:19 leader Id: 2 send heart to 1
+2024/01/15 12:39:19 leader Id: 2 send heart to 0
+2024/01/15 12:39:20 Leader 2 send to 1 heart fail
+2024/01/15 12:39:20 Leader 2 send to 1 heart fail
+2024/01/15 12:39:20 node 1 term 4, network from 0
+2024/01/15 12:39:20 node 0 get RequestVote from 1 with term 4, my term:4 and my votedfor is 0
+2024/01/15 12:39:20 node 1 get term 4, node 0 reply:0
+2024/01/15 12:39:20 node 1 exit send 0
+2024/01/15 12:39:20 Leader 2 send to 0 heart fail
+2024/01/15 12:39:20 node 1 term 4, network from 2
+2024/01/15 12:39:20 node 2 start term 3 heart
+2024/01/15 12:39:20 leader Id: 2 send heart to 1
+2024/01/15 12:39:20 leader Id: 2 send heart to 0
+2024/01/15 12:39:20 node 0 term 4, network from 2
+2024/01/15 12:39:21 check know node 1 term4 election timeout and my kind is 2
+2024/01/15 12:39:21 check know node 0 term4 election timeout and my kind is 2
+第二次选举失败
+所以调高了选举随机等待的阈值，0-300，减少了选举的超时4->3秒
+2024/01/15 12:39:21 1 start current term 4 election wait time 164
+2024/01/15 12:39:21 0 start current term 4 election wait time 162
+2024/01/15 12:39:21 node 0 start term 5 election
+2024/01/15 12:39:21 node 1 start term 5 election
+2024/01/15 12:39:21 node 1 send RequestVote to 2 term 5
+2024/01/15 12:39:21 node 0 send RequestVote to 2 term 5
+2024/01/15 12:39:21 node 1 send RequestVote to 0 term 5
+2024/01/15 12:39:21 node 0 send RequestVote to 1 term 5
+2024/01/15 12:39:21 node 0 get RequestVote from 1 with term 5, my term:5 and my votedfor is 0
+2024/01/15 12:39:21 node 1 get RequestVote from 0 with term 5, my term:5 and my votedfor is 1
+2024/01/15 12:39:21 node 0 get term 5, node 1 reply:0
+2024/01/15 12:39:21 node 0 exit send 1
+2024/01/15 12:39:21 node 1 get term 5, node 0 reply:0
+2024/01/15 12:39:21 node 1 exit send 0
+--- FAIL: TestReElection2A (12.17s)
+    config.go:331: expected one leader, got none
+FAIL
+exit status 1
+FAIL	6824/raft	16.684s

@@ -286,9 +286,9 @@ func (rf *Raft) startElection() {
 
 	defer log.Printf("node %d end election for term %d", rf.me, rf.currentTerm)
 
-	// 等待0-500ms随机时间后开启选举
+	// 等待0-300ms随机时间后开启选举
 	rand.NewSource(time.Now().UnixNano())
-	electionWaitTime := rand.Intn(200)
+	electionWaitTime := rand.Intn(300)
 	rf.mu.Lock()
 	log.Println(strconv.Itoa(rf.me) + " start current term " + strconv.Itoa(rf.currentTerm) + " election wait time " + strconv.Itoa(electionWaitTime))
 	electionTerm := rf.currentTerm      // 缓存当前竞选的任期
@@ -360,7 +360,7 @@ func (rf *Raft) startElection() {
 						}
 					}
 					// 选举超时结束进程
-					if time.Now().Unix()-startTime > 4 {
+					if time.Now().Unix()-startTime > 3 {
 						log.Println("node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout")
 						break
 					}
@@ -392,7 +392,7 @@ func (rf *Raft) startElection() {
 			agreeNumMu.Unlock()
 			time.Sleep(time.Duration(10) * time.Millisecond)
 
-			if time.Now().Unix()-startTime > 4 {
+			if time.Now().Unix()-startTime > 3 {
 				rf.mu.Lock()
 				log.Println("check know node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout and my kind is " +
 					strconv.Itoa(rf.peerKind))
