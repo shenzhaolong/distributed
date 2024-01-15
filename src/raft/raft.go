@@ -21,11 +21,25 @@ import (
 	"6824/labrpc"
 	"log"
 	"math/rand"
-	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
 )
+
+const (
+	NO_LEADER_GAP        int64 = 2000
+	LEADER_HEART_GAP     int64 = 1000
+	ELECTION_RANDOM_GAP  int   = 300
+	NET_TIMEOUT_GAP      int64 = 1000
+	NET_RETRY_GAP        int64 = 10
+	STATE_CHECK_GAP      int64 = 10
+	ELECTION_TIMEOUT_GAP int64 = 1000
+)
+
+// 获取当前毫秒数
+func getTimeNowMs() int64 {
+	return time.Now().UnixNano() / int64(time.Millisecond)
+}
 
 var NoLeaderTime int64 = 2     //s,超过该时间无心跳，进入canditate状态开启选举
 var LeaderHeartTime int = 1000 //ms,每一段时间发送心跳
@@ -79,9 +93,10 @@ type Raft struct {
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
 	// 所有服务器都有的持久的状态
-	currentTerm int
-	votedFor    int
-	Entries     []Entry
+	currentTerm  int
+	votedFor     int
+	VotedForTerm int
+	Entries      []Entry
 
 	leaderId int
 	// 1 follower 2 canadiate 3 leader
@@ -103,16 +118,16 @@ func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isleader bool
 	// Your code here (2A).
-	rf.mu.Lock()
 
+	rf.mu.Lock()
 	term = rf.currentTerm
 	if rf.peerKind == 3 {
 		isleader = true
 	} else {
 		isleader = false
 	}
-
 	rf.mu.Unlock()
+
 	return term, isleader
 }
 
@@ -173,12 +188,14 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	log.Println("node " + strconv.Itoa(rf.me) + " get RequestVote from " + strconv.Itoa(args.CandidateId) +
-		" with term " + strconv.Itoa(args.Term) + ", my term:" + strconv.Itoa(rf.currentTerm) + " and my votedfor is " +
-		strconv.Itoa(rf.votedFor))
-	if l := len(rf.Entries); args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId) &&
+	log.Printf("node %d get vote request from %d with term %d, my term is %d and my votefor is %d",
+		rf.me, args.CandidateId, args.Term, rf.currentTerm, rf.votedFor)
+	if l := len(rf.Entries); ((args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) ||
+		(rf.peerKind == 2 && rf.VotedForTerm < args.Term)) &&
 		(l == 0 || (l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm)) {
 		reply.VoteGranted = 1
+		rf.peerKind = 1
+		rf.VotedForTerm = args.Term
 		rf.votedFor = args.CandidateId
 	} else {
 		reply.VoteGranted = 0
@@ -190,12 +207,11 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 	if len(args.Entries) == 0 { // 心跳包
 		reply.Success = true
 		rf.mu.Lock()
-		log.Println("node " + strconv.Itoa(rf.me) + " get heart from " + strconv.Itoa(args.LeaderId) +
-			", my term is " + strconv.Itoa(rf.currentTerm) + " and heart term is " + strconv.Itoa(args.Term) +
-			", my peerkind is " + strconv.Itoa(rf.peerKind))
+		log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
+			rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
 		if args.Term >= rf.currentTerm {
 			rf.currentTerm = args.Term
-			rf.lastLeaderTime = time.Now().Unix() // 更新最后一次收到的时间
+			rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
 			rf.peerKind = 1
 			rf.votedFor = -1
 		}
@@ -285,25 +301,29 @@ func (rf *Raft) killed() bool {
 func (rf *Raft) startElection() {
 
 	defer log.Printf("node %d end election for term %d", rf.me, rf.currentTerm)
-
 	// 等待0-300ms随机时间后开启选举
 	rand.NewSource(time.Now().UnixNano())
-	electionWaitTime := rand.Intn(300)
+	electionWaitTime := rand.Intn(ELECTION_RANDOM_GAP)
+
 	rf.mu.Lock()
-	log.Println(strconv.Itoa(rf.me) + " start current term " + strconv.Itoa(rf.currentTerm) + " election wait time " + strconv.Itoa(electionWaitTime))
-	electionTerm := rf.currentTerm      // 缓存当前竞选的任期
+	log.Printf("%d start current term %d election wait time %d", rf.me, rf.currentTerm, electionWaitTime)
+	electionTerm := rf.currentTerm // 缓存当前竞选的任期
+	if electionTerm < rf.VotedForTerm {
+		electionTerm = rf.VotedForTerm
+	}
 	lastLeaderTime := rf.lastLeaderTime // 选举开始前要是有更新lastLeader表示已经再收到心跳
 	rf.votedFor = -1
 	rf.mu.Unlock()
+
 	time.Sleep(time.Duration(electionWaitTime) * time.Millisecond)
 
 	rf.mu.Lock()
-
+	// 表明重受到过心跳，此时不应开启选举
 	if rf.lastLeaderTime != lastLeaderTime {
 		rf.mu.Unlock()
 		return
 	}
-	rf.currentTerm = electionTerm + 1
+	rf.VotedForTerm = electionTerm + 1
 	rf.peerKind = 2
 	l := len(rf.Entries)
 	lastLogTerm := 0
@@ -315,33 +335,37 @@ func (rf *Raft) startElection() {
 	agreeNum := 1
 	agreeNumMu := sync.Mutex{}
 	peerNum := len(rf.peers)
-	startTime := time.Now().Unix()
-	log.Println("node " + strconv.Itoa(rf.me) + " start term " + strconv.Itoa(rf.currentTerm) + " election")
+	startTime := getTimeNowMs()
+	log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
 
 	rf.mu.Unlock()
 
 	for i := 0; i < peerNum && !rf.killed(); i++ {
 		if i != rf.me {
+			// 多线程向其他节点发送选举请求
 			go func(i int, startTime int64) {
 				defer log.Printf("node %d exit send %d", rf.me, i)
-				log.Println("node " + strconv.Itoa(rf.me) + " send RequestVote to " + strconv.Itoa(i) + " term " + strconv.Itoa(rf.currentTerm))
+				log.Printf("node %d send vote request to %d for term %d", rf.me, i, rf.VotedForTerm)
 				for !rf.killed() {
+
+					rf.mu.Lock()
 					req := RequestVoteArgs{
-						Term:         rf.currentTerm,
+						Term:         rf.VotedForTerm,
 						CandidateId:  rf.me,
 						LastLogIndex: l - 1,
 						LastLogTerm:  lastLogTerm,
 					}
 					rep := RequestVoteReply{}
+					rf.mu.Unlock()
+
 					ok := rf.sendRequestVote(i, &req, &rep)
 					if ok {
-						log.Println("node " + strconv.Itoa(rf.me) + " get term " + strconv.Itoa(rf.currentTerm) + ", node " +
-							strconv.Itoa(i) + " reply:" + strconv.Itoa(rep.VoteGranted))
+						log.Printf("node %d get term %d election, node %d reply %d", rf.me, rf.VotedForTerm, i, rep.VoteGranted)
 						if rep.VoteGranted == 1 {
 							agreeNumMu.Lock()
 							agreeNum += 1
 							agreeNumMu.Unlock()
-						} else if rep.Term > rf.currentTerm {
+						} else if rep.Term > rf.VotedForTerm {
 							rf.mu.Lock()
 							rf.currentTerm = rep.Term
 							rf.peerKind = 1
@@ -349,7 +373,7 @@ func (rf *Raft) startElection() {
 						}
 						break
 					} else {
-						log.Println("node " + strconv.Itoa(rf.me) + " term " + strconv.Itoa(rf.currentTerm) + ", network from " + strconv.Itoa(i))
+						log.Printf("node %d to %d vote request for term %d is send fail", rf.me, rf.VotedForTerm, i)
 						rf.mu.Lock()
 						if rf.peerKind != 2 {
 							log.Printf("node %d election exit with peer kind %d", rf.me, rf.peerKind)
@@ -360,23 +384,25 @@ func (rf *Raft) startElection() {
 						}
 					}
 					// 选举超时结束进程
-					if time.Now().Unix()-startTime > 3 {
-						log.Println("node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout")
+					if getTimeNowMs()-startTime > ELECTION_TIMEOUT_GAP {
+						log.Printf("node %d term %d election timeout", rf.me, rf.VotedForTerm)
 						break
 					}
 					// 需要重发时等待10ms
-					time.Sleep(time.Duration(10) * time.Millisecond)
+					time.Sleep(time.Duration(NET_RETRY_GAP) * time.Millisecond)
 				}
 			}(i, startTime)
 		}
 	}
 
+	// 检测选举状态
 	for !rf.killed() {
 		agreeNumMu.Lock()
 		if agreeNum >= needWaitNum {
 			rf.mu.Lock()
 			rf.peerKind = 3
-			log.Println("node " + strconv.Itoa(rf.me) + " get term" + strconv.Itoa(rf.currentTerm) + " success")
+			rf.currentTerm = rf.VotedForTerm
+			log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
 			rf.mu.Unlock()
 			agreeNumMu.Unlock()
 			return
@@ -390,23 +416,93 @@ func (rf *Raft) startElection() {
 				rf.mu.Unlock()
 			}
 			agreeNumMu.Unlock()
-			time.Sleep(time.Duration(10) * time.Millisecond)
+			time.Sleep(time.Duration(STATE_CHECK_GAP) * time.Millisecond)
 
-			if time.Now().Unix()-startTime > 3 {
+			if getTimeNowMs()-startTime > ELECTION_TIMEOUT_GAP {
 				rf.mu.Lock()
-				log.Println("check know node " + strconv.Itoa(rf.me) + " term" + strconv.Itoa(rf.currentTerm) + " election timeout and my kind is " +
-					strconv.Itoa(rf.peerKind))
+				log.Printf("check know node %d term %d election timeout and kind is %d", rf.me, rf.VotedForTerm,
+					rf.peerKind)
 				if rf.peerKind != 2 {
-					log.Printf("node %d end election for term %d", rf.me, rf.currentTerm)
+					rf.votedFor = -1
 					rf.mu.Unlock()
 					return
 				} else {
 					rf.mu.Unlock()
-					rf.startElection()
+					defer rf.startElection()
 				}
 				break
 			}
 		}
+	}
+}
+
+// Make调用后负责监听选举相关的身份功能
+func (rf *Raft) listenElection() {
+	for !rf.killed() {
+		rf.mu.Lock()
+		peerKind := rf.peerKind
+		lastLeaderTime := rf.lastLeaderTime
+		rf.mu.Unlock()
+		if peerKind == 1 {
+			timeNow := getTimeNowMs()
+			if timeNow-lastLeaderTime >= NO_LEADER_GAP {
+				// 开启选举
+				peerKind = 2
+				log.Printf("time out, %d start election", rf.me)
+				rf.startElection()
+			}
+		}
+		// 重新获取当前自己身份
+		rf.mu.Lock()
+		peerKind = rf.peerKind
+		rf.mu.Unlock()
+		if peerKind == 3 {
+			log.Printf("node %d start term %d heart", rf.me, rf.currentTerm)
+			rf.mu.Lock()
+			// 如果不提取缓存当前的Num，将导致在有成员退出后依然访问导致越界
+			peerNum := len(rf.peers)
+			rf.mu.Unlock()
+			for i := 0; i < peerNum; i++ {
+				if i != rf.me {
+					go func(i int) {
+
+						rf.mu.Lock()
+						l := len(rf.Entries)
+						appendEntriesArgs := AppendEntriesArgs{
+							Term:         rf.currentTerm,
+							LeaderId:     rf.me,
+							PrevLogIndex: l - 1,
+							Entries:      nil,
+							LeaderCommit: rf.commitIndex,
+						}
+						if l == 0 {
+							appendEntriesArgs.PrevLogTerm = 0
+						} else {
+							appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
+						}
+						rf.mu.Unlock()
+
+						appendEntriesReply := AppendEntriesReply{}
+						log.Printf("leader %d send heart to %d", rf.me, i)
+
+						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
+						if ok {
+							rf.mu.Lock()
+							if rf.currentTerm < appendEntriesReply.Term {
+								rf.currentTerm = appendEntriesReply.Term
+								rf.peerKind = 1
+							}
+							rf.mu.Unlock()
+						} else {
+							log.Printf("Leader %d send to %d heart fail", rf.me, i)
+						}
+					}(i)
+				}
+			}
+			// 1000ms发一次心跳
+			time.Sleep(time.Duration(LEADER_HEART_GAP) * time.Millisecond)
+		}
+		time.Sleep(time.Millisecond * 100) // 100ms检测一次
 	}
 }
 
@@ -429,77 +525,78 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.votedFor = -1
 
 	// Your initialization code here (2A, 2B, 2C).
-	rf.peerKind = 1                       // 初始化是follower
-	rf.lastLeaderTime = time.Now().Unix() // 初始化开启选举定时器
-	go func() {
-		for !rf.killed() {
-			rf.mu.Lock()
-			peerKind := rf.peerKind
-			lastLeaderTime := rf.lastLeaderTime
-			// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
-			rf.mu.Unlock()
-			if peerKind == 1 {
-				timeNow := time.Now().Unix()
-				log.Printf("node %d check heart timeout, timeNow is %d, lastLeaderTime is %d", rf.me, timeNow, lastLeaderTime)
-				if timeNow-lastLeaderTime >= NoLeaderTime {
-					// 开启选举
-					peerKind = 2
-					log.Println("time out, start election, " + strconv.Itoa(me))
-				}
-			}
-			if peerKind == 2 {
-				rf.startElection()
-			}
-			rf.mu.Lock()
-			peerKind = rf.peerKind
-			// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
-			rf.mu.Unlock()
-			if peerKind == 3 {
-				log.Println("node " + strconv.Itoa(rf.me) + " start term " + strconv.Itoa(rf.currentTerm) +
-					" heart")
-				rf.mu.Lock()
-				peerNum := len(rf.peers)
-				rf.mu.Unlock()
-				for i := 0; i < peerNum; i++ {
-					if i != me {
-						rf.mu.Lock()
-						var l int = len(rf.Entries)
-						rf.mu.Unlock()
-						go func(i int) {
-							appendEntriesArgs := AppendEntriesArgs{
-								Term:         rf.currentTerm,
-								LeaderId:     me,
-								PrevLogIndex: l - 1,
-								Entries:      nil,
-								LeaderCommit: rf.commitIndex,
-							}
-							if l == 0 {
-								appendEntriesArgs.PrevLogTerm = 0
-							} else {
-								appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
-							}
-							appendEntriesReply := AppendEntriesReply{}
-							log.Println("leader Id: " + strconv.Itoa(me) + " send heart to " + strconv.Itoa(i))
+	rf.peerKind = 1                    // 初始化是follower
+	rf.lastLeaderTime = getTimeNowMs() // 初始化开启选举定时器
+	go rf.listenElection()
+	// go func() {
+	// 	for !rf.killed() {
+	// 		rf.mu.Lock()
+	// 		peerKind := rf.peerKind
+	// 		lastLeaderTime := rf.lastLeaderTime
+	// 		// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
+	// 		rf.mu.Unlock()
+	// 		if peerKind == 1 {
+	// 			timeNow := time.Now().Unix()
+	// 			log.Printf("node %d check heart timeout, timeNow is %d, lastLeaderTime is %d", rf.me, timeNow, lastLeaderTime)
+	// 			if timeNow-lastLeaderTime >= NoLeaderTime {
+	// 				// 开启选举
+	// 				peerKind = 2
+	// 				log.Println("time out, start election, " + strconv.Itoa(me))
+	// 				rf.startElection()
+	// 			}
+	// 		}
+	// 		if peerKind == 2 {
+	// 		}
+	// 		rf.mu.Lock()
+	// 		peerKind = rf.peerKind
+	// 		// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
+	// 		rf.mu.Unlock()
+	// 		if peerKind == 3 {
+	// 			log.Println("node " + strconv.Itoa(rf.me) + " start term " + strconv.Itoa(rf.currentTerm) +
+	// 				" heart")
+	// 			rf.mu.Lock()
+	// 			peerNum := len(rf.peers)
+	// 			rf.mu.Unlock()
+	// 			for i := 0; i < peerNum; i++ {
+	// 				if i != me {
+	// 					rf.mu.Lock()
+	// 					var l int = len(rf.Entries)
+	// 					rf.mu.Unlock()
+	// 					go func(i int) {
+	// 						appendEntriesArgs := AppendEntriesArgs{
+	// 							Term:         rf.currentTerm,
+	// 							LeaderId:     me,
+	// 							PrevLogIndex: l - 1,
+	// 							Entries:      nil,
+	// 							LeaderCommit: rf.commitIndex,
+	// 						}
+	// 						if l == 0 {
+	// 							appendEntriesArgs.PrevLogTerm = 0
+	// 						} else {
+	// 							appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
+	// 						}
+	// 						appendEntriesReply := AppendEntriesReply{}
+	// 						log.Println("leader Id: " + strconv.Itoa(me) + " send heart to " + strconv.Itoa(i))
 
-							ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
-							if ok {
-								rf.mu.Lock()
-								if rf.currentTerm < appendEntriesReply.Term {
-									rf.currentTerm = appendEntriesReply.Term
-									rf.peerKind = 1
-								}
-								rf.mu.Unlock()
-							} else {
-								log.Printf("Leader %d send to %d heart fail", rf.me, i)
-							}
-						}(i)
-					}
-				}
-				time.Sleep(time.Millisecond * time.Duration(LeaderHeartTime))
-			}
-			time.Sleep(time.Millisecond * 100) // 100ms检测一次
-		}
-	}()
+	// 						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
+	// 						if ok {
+	// 							rf.mu.Lock()
+	// 							if rf.currentTerm < appendEntriesReply.Term {
+	// 								rf.currentTerm = appendEntriesReply.Term
+	// 								rf.peerKind = 1
+	// 							}
+	// 							rf.mu.Unlock()
+	// 						} else {
+	// 							log.Printf("Leader %d send to %d heart fail", rf.me, i)
+	// 						}
+	// 					}(i)
+	// 				}
+	// 			}
+	// 			time.Sleep(time.Millisecond * time.Duration(LeaderHeartTime))
+	// 		}
+	// 		time.Sleep(time.Millisecond * 100) // 100ms检测一次
+	// 	}
+	// }()
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
