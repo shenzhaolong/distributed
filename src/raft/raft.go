@@ -190,6 +190,11 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	defer rf.mu.Unlock()
 	log.Printf("node %d get vote request from %d with term %d, my term is %d and my votefor is %d",
 		rf.me, args.CandidateId, args.Term, rf.currentTerm, rf.votedFor)
+	/* 需要投票的情况
+	** 1.投票者任期比当前节点大，且没有投别的候选人
+	** 这导致对一个任期只能投一次票，两个节点同时超时就会导致一起进入选举状态立即投票给自己，进而不能给其他节点投票
+	** 改进措施：2.一旦选举期收到任期更大的请求则立即投票
+	 */
 	if l := len(rf.Entries); ((args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) ||
 		(rf.peerKind == 2 && rf.VotedForTerm < args.Term)) &&
 		(l == 0 || (l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm)) {
