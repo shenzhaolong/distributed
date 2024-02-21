@@ -19,7 +19,6 @@ package raft
 
 import (
 	"6824/labrpc"
-	"log"
 	"math/rand"
 	"sync"
 	"sync/atomic"
@@ -27,12 +26,12 @@ import (
 )
 
 const (
-	NO_LEADER_GAP        int64 = 2000 // 超过该时间无心跳，进入canditate状态开启选举
-	LEADER_HEART_GAP     int64 = 1000 // Leader发送心跳的时间间隔
-	ELECTION_RANDOM_GAP  int   = 300  // 开启选举前等待的最大时间间隔
-	NET_RETRY_GAP        int64 = 10   // 网络超时时间
-	STATE_CHECK_GAP      int64 = 10   // 选举是否成功检查间隔
-	ELECTION_TIMEOUT_GAP int64 = 1000 // 选举超时时间
+	NO_LEADER_GAP        int64 = 500 // 超过该时间无心跳，进入canditate状态开启选举
+	LEADER_HEART_GAP     int64 = 200 // Leader发送心跳的时间间隔
+	ELECTION_RANDOM_GAP  int   = 150 // 开启选举前等待的最大时间间隔
+	NET_RETRY_GAP        int64 = 10  // 网络超时时间
+	STATE_CHECK_GAP      int64 = 10  // 选举是否成功检查间隔
+	ELECTION_TIMEOUT_GAP int64 = 800 // 选举超时时间
 )
 
 // 获取当前毫秒数
@@ -184,8 +183,8 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	log.Printf("node %d get vote request from %d with term %d, my term is %d and my votefor is %d",
-		rf.me, args.CandidateId, args.Term, rf.currentTerm, rf.votedFor)
+	// log.Printf("node %d get vote request from %d with term %d, my term is %d and my votefor is %d",
+	//	rf.me, args.CandidateId, args.Term, rf.currentTerm, rf.votedFor)
 	/* 需要投票的情况
 	** 1.投票者任期比当前节点大，且没有投别的候选人
 	** 这导致对一个任期只能投一次票，两个节点同时超时就会导致一起进入选举状态立即投票给自己，进而不能给其他节点投票
@@ -208,8 +207,8 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 	if len(args.Entries) == 0 { // 心跳包
 		reply.Success = true
 		rf.mu.Lock()
-		log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
-			rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
+		// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
+		//	rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
 		if args.Term >= rf.currentTerm {
 			rf.currentTerm = args.Term
 			rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
@@ -301,13 +300,13 @@ func (rf *Raft) killed() bool {
 
 func (rf *Raft) startElection() {
 
-	defer log.Printf("node %d end election for term %d", rf.me, rf.currentTerm)
+	// defer log.Printf("node %d end election for term %d", rf.me, rf.currentTerm)
 	// 等待0-300ms随机时间后开启选举
 	rand.NewSource(time.Now().UnixNano())
 	electionWaitTime := rand.Intn(ELECTION_RANDOM_GAP)
 
 	rf.mu.Lock()
-	log.Printf("%d start current term %d election wait time %d", rf.me, rf.currentTerm, electionWaitTime)
+	// log.Printf("%d start current term %d election wait time %d", rf.me, rf.currentTerm, electionWaitTime)
 	electionTerm := rf.currentTerm // 缓存当前竞选的任期
 	// 如果有其他节点已经开启选举任期更高的选举，那么开启比其低的选举可能毫无意义
 	if electionTerm < rf.VotedForTerm {
@@ -338,7 +337,7 @@ func (rf *Raft) startElection() {
 	agreeNumMu := sync.Mutex{}
 	peerNum := len(rf.peers)
 	startTime := getTimeNowMs()
-	log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
+	// log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
 
 	rf.mu.Unlock()
 
@@ -346,8 +345,8 @@ func (rf *Raft) startElection() {
 		if i != rf.me {
 			// 多线程向其他节点发送选举请求
 			go func(i int, startTime int64) {
-				defer log.Printf("node %d exit send %d", rf.me, i)
-				log.Printf("node %d send vote request to %d for term %d", rf.me, i, rf.VotedForTerm)
+				// defer log.Printf("node %d exit send %d", rf.me, i)
+				// log.Printf("node %d send vote request to %d for term %d", rf.me, i, rf.VotedForTerm)
 				for !rf.killed() {
 
 					rf.mu.Lock()
@@ -362,7 +361,7 @@ func (rf *Raft) startElection() {
 
 					ok := rf.sendRequestVote(i, &req, &rep)
 					if ok {
-						log.Printf("node %d get term %d election, node %d reply %d", rf.me, rf.VotedForTerm, i, rep.VoteGranted)
+						// log.Printf("node %d get term %d election, node %d reply %d", rf.me, rf.VotedForTerm, i, rep.VoteGranted)
 						if rep.VoteGranted == 1 {
 							agreeNumMu.Lock()
 							agreeNum += 1
@@ -375,10 +374,10 @@ func (rf *Raft) startElection() {
 						}
 						break
 					} else {
-						log.Printf("node %d to %d vote request for term %d is send fail", rf.me, rf.VotedForTerm, i)
+						// log.Printf("node %d to %d vote request for term %d is send fail", rf.me, rf.VotedForTerm, i)
 						rf.mu.Lock()
 						if rf.peerKind != 2 {
-							log.Printf("node %d election exit with peer kind %d", rf.me, rf.peerKind)
+							// log.Printf("node %d election exit with peer kind %d", rf.me, rf.peerKind)
 							rf.mu.Unlock()
 							break
 						} else {
@@ -387,7 +386,7 @@ func (rf *Raft) startElection() {
 					}
 					// 选举超时结束进程
 					if getTimeNowMs()-startTime > ELECTION_TIMEOUT_GAP {
-						log.Printf("node %d term %d election timeout", rf.me, rf.VotedForTerm)
+						// log.Printf("node %d term %d election timeout", rf.me, rf.VotedForTerm)
 						break
 					}
 					// 需要重发时等待10ms
@@ -404,7 +403,7 @@ func (rf *Raft) startElection() {
 			rf.mu.Lock()
 			rf.peerKind = 3
 			rf.currentTerm = rf.VotedForTerm
-			log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
+			// log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
 			rf.mu.Unlock()
 			agreeNumMu.Unlock()
 			return
@@ -422,8 +421,8 @@ func (rf *Raft) startElection() {
 
 			if getTimeNowMs()-startTime > ELECTION_TIMEOUT_GAP {
 				rf.mu.Lock()
-				log.Printf("check know node %d term %d election timeout and kind is %d", rf.me, rf.VotedForTerm,
-					rf.peerKind)
+				// log.Printf("check know node %d term %d election timeout and kind is %d", rf.me, rf.VotedForTerm,
+				// 	rf.peerKind)
 				if rf.peerKind != 2 {
 					rf.votedFor = -1
 					rf.mu.Unlock()
@@ -450,7 +449,7 @@ func (rf *Raft) listenElection() {
 			if timeNow-lastLeaderTime >= NO_LEADER_GAP {
 				// 开启选举
 				peerKind = 2
-				log.Printf("time out, %d start election", rf.me)
+				// log.Printf("time out, %d start election", rf.me)
 				rf.startElection()
 			}
 		}
@@ -459,7 +458,7 @@ func (rf *Raft) listenElection() {
 		peerKind = rf.peerKind
 		rf.mu.Unlock()
 		if peerKind == 3 {
-			log.Printf("node %d start term %d heart", rf.me, rf.currentTerm)
+			// log.Printf("node %d start term %d heart", rf.me, rf.currentTerm)
 			rf.mu.Lock()
 			// 如果不提取缓存当前的Num，将导致在有成员退出后依然访问导致越界
 			peerNum := len(rf.peers)
@@ -485,7 +484,7 @@ func (rf *Raft) listenElection() {
 						rf.mu.Unlock()
 
 						appendEntriesReply := AppendEntriesReply{}
-						log.Printf("leader %d send heart to %d", rf.me, i)
+						// log.Printf("leader %d send heart to %d", rf.me, i)
 
 						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
 						if ok {
@@ -496,7 +495,7 @@ func (rf *Raft) listenElection() {
 							}
 							rf.mu.Unlock()
 						} else {
-							log.Printf("Leader %d send to %d heart fail", rf.me, i)
+							// log.Printf("Leader %d send to %d heart fail", rf.me, i)
 						}
 					}(i)
 				}
