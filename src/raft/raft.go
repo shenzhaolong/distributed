@@ -27,22 +27,18 @@ import (
 )
 
 const (
-	NO_LEADER_GAP        int64 = 2000
-	LEADER_HEART_GAP     int64 = 1000
-	ELECTION_RANDOM_GAP  int   = 300
-	NET_TIMEOUT_GAP      int64 = 1000
-	NET_RETRY_GAP        int64 = 10
-	STATE_CHECK_GAP      int64 = 10
-	ELECTION_TIMEOUT_GAP int64 = 1000
+	NO_LEADER_GAP        int64 = 2000 // 超过该时间无心跳，进入canditate状态开启选举
+	LEADER_HEART_GAP     int64 = 1000 // Leader发送心跳的时间间隔
+	ELECTION_RANDOM_GAP  int   = 300  // 开启选举前等待的最大时间间隔
+	NET_RETRY_GAP        int64 = 10   // 网络超时时间
+	STATE_CHECK_GAP      int64 = 10   // 选举是否成功检查间隔
+	ELECTION_TIMEOUT_GAP int64 = 1000 // 选举超时时间
 )
 
 // 获取当前毫秒数
 func getTimeNowMs() int64 {
 	return time.Now().UnixNano() / int64(time.Millisecond)
 }
-
-var NoLeaderTime int64 = 2     //s,超过该时间无心跳，进入canditate状态开启选举
-var LeaderHeartTime int = 1000 //ms,每一段时间发送心跳
 
 // import "bytes"
 // import "../labgob"
@@ -313,6 +309,7 @@ func (rf *Raft) startElection() {
 	rf.mu.Lock()
 	log.Printf("%d start current term %d election wait time %d", rf.me, rf.currentTerm, electionWaitTime)
 	electionTerm := rf.currentTerm // 缓存当前竞选的任期
+	// 如果有其他节点已经开启选举任期更高的选举，那么开启比其低的选举可能毫无意义
 	if electionTerm < rf.VotedForTerm {
 		electionTerm = rf.VotedForTerm
 	}
@@ -533,75 +530,6 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.peerKind = 1                    // 初始化是follower
 	rf.lastLeaderTime = getTimeNowMs() // 初始化开启选举定时器
 	go rf.listenElection()
-	// go func() {
-	// 	for !rf.killed() {
-	// 		rf.mu.Lock()
-	// 		peerKind := rf.peerKind
-	// 		lastLeaderTime := rf.lastLeaderTime
-	// 		// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
-	// 		rf.mu.Unlock()
-	// 		if peerKind == 1 {
-	// 			timeNow := time.Now().Unix()
-	// 			log.Printf("node %d check heart timeout, timeNow is %d, lastLeaderTime is %d", rf.me, timeNow, lastLeaderTime)
-	// 			if timeNow-lastLeaderTime >= NoLeaderTime {
-	// 				// 开启选举
-	// 				peerKind = 2
-	// 				log.Println("time out, start election, " + strconv.Itoa(me))
-	// 				rf.startElection()
-	// 			}
-	// 		}
-	// 		if peerKind == 2 {
-	// 		}
-	// 		rf.mu.Lock()
-	// 		peerKind = rf.peerKind
-	// 		// fmt.Println("start len: " + strconv.Itoa(peerNum) + " " + strconv.Itoa(me))
-	// 		rf.mu.Unlock()
-	// 		if peerKind == 3 {
-	// 			log.Println("node " + strconv.Itoa(rf.me) + " start term " + strconv.Itoa(rf.currentTerm) +
-	// 				" heart")
-	// 			rf.mu.Lock()
-	// 			peerNum := len(rf.peers)
-	// 			rf.mu.Unlock()
-	// 			for i := 0; i < peerNum; i++ {
-	// 				if i != me {
-	// 					rf.mu.Lock()
-	// 					var l int = len(rf.Entries)
-	// 					rf.mu.Unlock()
-	// 					go func(i int) {
-	// 						appendEntriesArgs := AppendEntriesArgs{
-	// 							Term:         rf.currentTerm,
-	// 							LeaderId:     me,
-	// 							PrevLogIndex: l - 1,
-	// 							Entries:      nil,
-	// 							LeaderCommit: rf.commitIndex,
-	// 						}
-	// 						if l == 0 {
-	// 							appendEntriesArgs.PrevLogTerm = 0
-	// 						} else {
-	// 							appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
-	// 						}
-	// 						appendEntriesReply := AppendEntriesReply{}
-	// 						log.Println("leader Id: " + strconv.Itoa(me) + " send heart to " + strconv.Itoa(i))
-
-	// 						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
-	// 						if ok {
-	// 							rf.mu.Lock()
-	// 							if rf.currentTerm < appendEntriesReply.Term {
-	// 								rf.currentTerm = appendEntriesReply.Term
-	// 								rf.peerKind = 1
-	// 							}
-	// 							rf.mu.Unlock()
-	// 						} else {
-	// 							log.Printf("Leader %d send to %d heart fail", rf.me, i)
-	// 						}
-	// 					}(i)
-	// 				}
-	// 			}
-	// 			time.Sleep(time.Millisecond * time.Duration(LeaderHeartTime))
-	// 		}
-	// 		time.Sleep(time.Millisecond * 100) // 100ms检测一次
-	// 	}
-	// }()
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
