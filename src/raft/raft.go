@@ -104,6 +104,8 @@ type Raft struct {
 	lastLeaderTime int64 // 上次收到心跳或者appendEntity的时间
 
 	// leader才有的状态
+	nextIndex  map[int]int
+	matchIndex map[int]int
 }
 
 // return currentTerm and whether this server
@@ -204,19 +206,42 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 }
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
-	if len(args.Entries) == 0 { // 心跳包
+	rf.mu.Lock()
+	reply.Term = rf.currentTerm
+	if args.Term < rf.currentTerm { // 忽略过期的消息
+		rf.mu.Unlock()
+		reply.Success = false
+		return
+	} else if args.Term >= rf.currentTerm {
+		rf.currentTerm = args.Term
+		rf.peerKind = 1
+		rf.votedFor = -1
+		if args.PrevLogIndex != -1 && rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm { // 忽略过期的日志
+			rf.mu.Unlock()
+			reply.Success = false
+			// 截断不匹配的所有日志
+			rf.Entries = rf.Entries[:args.PrevLogIndex]
+			return
+		}
 		reply.Success = true
-		rf.mu.Lock()
-		// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
-		//	rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
-		if args.Term >= rf.currentTerm {
+		if args.LeaderCommit > rf.commitIndex {
+			if args.PrevLogIndex+1 < args.LeaderCommit {
+				rf.commitIndex = args.PrevLogIndex + 1
+			} else {
+				rf.commitIndex = args.LeaderCommit
+			}
+		}
+		if len(args.Entries) == 0 { // 心跳包
+			// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
+			//	rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
 			rf.currentTerm = args.Term
 			rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
 			rf.peerKind = 1
 			rf.votedFor = -1
+			rf.mu.Unlock()
+			return
 		}
-		reply.Term = rf.currentTerm
-		rf.mu.Unlock()
+		rf.Entries = append(rf.Entries, args.Entries...)
 	}
 }
 
@@ -257,6 +282,62 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 	return ok
 }
 
+// 使得某个节点和自己同步
+func (rf *Raft) agreementNode(target int) {
+
+}
+
+// 将第idx条日志复制到target节点
+func (rf *Raft) sendEntryByIdx(idx int, target int) {
+	for !rf.killed() {
+		rf.mu.Lock()
+		// 当前不是Leader，不允许复制
+		if rf.peerKind != 3 {
+			rf.mu.Unlock()
+			break
+		}
+		// 第一条日志
+		preTerm := -1
+		if idx != 0 {
+			preTerm = rf.Entries[idx-1].Term
+		}
+		req := AppendEntriesArgs{
+			Term:         rf.currentTerm,
+			LeaderId:     rf.me,
+			PrevLogIndex: idx - 1,
+			PrevLogTerm:  preTerm,
+			Entries:      rf.Entries[idx : idx+1],
+		}
+		rep := AppendEntriesReply{}
+		rf.mu.Unlock()
+
+		ok := rf.sendAppendEntity(target, &req, &rep)
+		if ok {
+			if rep.Success {
+				rf.mu.Lock()
+				rf.nextIndex[target] = idx + 1
+				rf.matchIndex[target] = idx
+				rf.mu.Unlock()
+				return
+			} else {
+				rf.mu.Lock()
+				if rep.Term > rf.currentTerm {
+					rf.currentTerm = rep.Term
+					rf.peerKind = 1
+					rf.votedFor = -1
+					rf.mu.Unlock()
+					return
+				} else {
+					rf.nextIndex[target]--
+					rf.mu.Unlock()
+					rf.sendEntryByIdx(idx-1, target)
+				}
+			}
+
+		}
+	}
+}
+
 // the service using Raft (e.g. a k/v server) wants to start
 // agreement on the next command to be appended to Raft's log. if this
 // server isn't the leader, returns false. otherwise start the
@@ -272,10 +353,33 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index := -1
 	term := -1
-	isLeader := true
+	isLeader := false
 
 	// Your code here (2B).
+	if !rf.killed() {
+		rf.mu.Lock()
+		term = rf.currentTerm
+		index = rf.nextIndex[rf.me]
+		if rf.peerKind != 3 {
+			isLeader = false
+			rf.mu.Unlock()
+			return index, term, isLeader
+		}
+		isLeader = true
+		rf.Entries[index].Term = term
+		rf.Entries[index].Command = command
+	}
+	rf.mu.Lock()
+	// 如果不提取缓存当前的Num，将导致在有成员退出后依然访问导致越界
+	peerNum := len(rf.peers)
+	rf.mu.Unlock()
+	for i := 0; i < peerNum; i++ {
+		if i != rf.me {
+			go func(i int) {
 
+			}(i)
+		}
+	}
 	return index, term, isLeader
 }
 
