@@ -284,7 +284,55 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 
 // 使得某个节点和自己同步
 func (rf *Raft) agreementNode(target int) {
+	// 尝试从nextInt[target]复制到领导的最后一条日志
+	rf.mu.Lock()
+	lastEntryIdx := len(rf.Entries) - 1
+	for !rf.killed() && rf.nextIndex[target] != lastEntryIdx+1 {
+		rf.mu.Lock()
+		// 当前不是Leader，不允许复制
+		if rf.peerKind != 3 {
+			rf.mu.Unlock()
+			break
+		}
+		idx := rf.nextIndex[target]
+		preTerm := -1
+		if idx != 0 {
+			preTerm = rf.Entries[idx-1].Term
+		}
+		req := AppendEntriesArgs{
+			Term:         rf.currentTerm,
+			LeaderId:     rf.me,
+			PrevLogIndex: idx - 1,
+			PrevLogTerm:  preTerm,
+			Entries:      rf.Entries[idx : idx+1],
+		}
+		rep := AppendEntriesReply{}
+		rf.mu.Unlock()
+		ok := rf.sendAppendEntity(target, &req, &rep)
+		if ok {
+			if rep.Success {
+				rf.mu.Lock()
+				rf.nextIndex[target] = idx + 1
+				rf.matchIndex[target] = idx
+				rf.mu.Unlock()
+				return
+			} else {
+				rf.mu.Lock()
+				if rep.Term > rf.currentTerm {
+					rf.currentTerm = rep.Term
+					rf.peerKind = 1
+					rf.votedFor = -1
+					rf.mu.Unlock()
+					return
+				} else {
+					rf.nextIndex[target]--
+					rf.mu.Unlock()
+					rf.sendEntryByIdx(idx-1, target)
+				}
+			}
 
+		}
+	}
 }
 
 // 将第idx条日志复制到target节点
@@ -375,9 +423,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	rf.mu.Unlock()
 	for i := 0; i < peerNum; i++ {
 		if i != rf.me {
-			go func(i int) {
-
-			}(i)
+			go rf.agreementNode(i)
 		}
 	}
 	return index, term, isLeader
