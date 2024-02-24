@@ -286,14 +286,7 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 func (rf *Raft) agreementNode(target int) {
 	// 尝试从nextInt[target]复制到领导的最后一条日志
 	rf.mu.Lock()
-	lastEntryIdx := len(rf.Entries) - 1
-	for !rf.killed() && rf.nextIndex[target] != lastEntryIdx+1 {
-		rf.mu.Lock()
-		// 当前不是Leader，不允许复制
-		if rf.peerKind != 3 {
-			rf.mu.Unlock()
-			break
-		}
+	for !rf.killed() && rf.nextIndex[target] != len(rf.Entries) && rf.peerKind == 3 {
 		idx := rf.nextIndex[target]
 		preTerm := -1
 		if idx != 0 {
@@ -327,12 +320,11 @@ func (rf *Raft) agreementNode(target int) {
 				} else {
 					rf.nextIndex[target]--
 					rf.mu.Unlock()
-					rf.sendEntryByIdx(idx-1, target)
 				}
 			}
-
 		}
 	}
+	rf.mu.Unlock()
 }
 
 // 将第idx条日志复制到target节点
@@ -549,11 +541,17 @@ func (rf *Raft) startElection() {
 	// 检测选举状态
 	for !rf.killed() {
 		agreeNumMu.Lock()
+		// 选举成功
 		if agreeNum >= needWaitNum {
 			rf.mu.Lock()
 			rf.peerKind = 3
 			rf.currentTerm = rf.VotedForTerm
 			// log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
+			entrySize, peerSize := len(rf.Entries), len(rf.peers)
+			for i := 0; i < peerSize; i++ {
+				rf.nextIndex[i] = entrySize
+				rf.matchIndex[i] = 0
+			}
 			rf.mu.Unlock()
 			agreeNumMu.Unlock()
 			return
