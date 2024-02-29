@@ -418,7 +418,28 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 			go rf.agreementNode(i)
 		}
 	}
-	return index, term, isLeader
+
+	// 检测是否超过半数的节点已经完成了复制
+	rf.mu.Lock()
+	needWaitNum := int((len(rf.peers) + 1) / 2)
+	agreeNum := 0
+	for !rf.killed() && rf.peerKind == 3 {
+		rf.mu.Unlock()
+		time.Sleep(time.Millisecond * time.Duration(STATE_CHECK_GAP))
+
+		rf.mu.Lock()
+		peerSize := len(rf.peers)
+		for i := 0; i < peerSize; i++ {
+			if rf.matchIndex[i] >= index {
+				agreeNum++
+			}
+		}
+		rf.mu.Unlock()
+		if needWaitNum >= agreeNum {
+			return index, term, isLeader
+		}
+	}
+	return index, term, false
 }
 
 // the tester doesn't halt goroutines created by Raft after each test,
