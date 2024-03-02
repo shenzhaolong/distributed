@@ -88,6 +88,7 @@ type Raft struct {
 	// Your data here (2A, 2B, 2C).
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
+	applyCh *chan ApplyMsg
 	// 所有服务器都有的持久的状态
 	currentTerm  int
 	votedFor     int
@@ -196,7 +197,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	 */
 	if l := len(rf.Entries); ((args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) ||
 		(rf.peerKind == 2 && rf.VotedForTerm < args.Term)) &&
-		(l == 0 || (l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm)) {
+		(l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm) {
 		reply.VoteGranted = 1
 		rf.peerKind = 1
 		rf.VotedForTerm = args.Term
@@ -205,6 +206,20 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		reply.VoteGranted = 0
 	}
 	reply.Term = rf.currentTerm
+}
+
+func (rf *Raft) sendApplyMsg(index int) {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if index > rf.commitIndex {
+		log.Panicf("node %d need send apply msg out of index %d", rf.me, index)
+	}
+	applyMsg := ApplyMsg{
+		CommandValid: true,
+		Command:      rf.Entries[index].Command,
+		CommandIndex: index,
+	}
+	*rf.applyCh <- applyMsg
 }
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
@@ -230,13 +245,17 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		}
 		reply.Success = true
 		if args.LeaderCommit > rf.commitIndex {
+			lastCommitIndex := rf.commitIndex
 			if args.PrevLogIndex+1 < args.LeaderCommit {
 				rf.commitIndex = args.PrevLogIndex + 1
 			} else {
 				rf.commitIndex = args.LeaderCommit
 			}
-			log.Printf("node %d need update commitindex, %v, my commitindex is %d, my entry is %v",
-				rf.me, args, rf.commitIndex, rf.Entries)
+			for i := lastCommitIndex + 1; i <= rf.commitIndex; i++ {
+				go rf.sendApplyMsg(i)
+			}
+			// log.Printf("node %d need update commitindex, %v, my commitindex is %d, my entry is %v",
+			// 	rf.me, args, rf.commitIndex, rf.Entries)
 		}
 		if len(args.Entries) == 0 { // 心跳包
 			// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
@@ -249,12 +268,12 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 			rf.mu.Unlock()
 			return
 		} else {
-			log.Printf("node %d get entity from %d, args is %v", rf.me, args.LeaderId, args)
+			log.Printf("node %d get entity from %d", rf.me, args.LeaderId)
 		}
 		// 需要新增
 		if len(rf.Entries)-1 == args.PrevLogIndex {
 			rf.Entries = append(rf.Entries, args.Entries...)
-			log.Printf("node %d add entry, mu entrys is %v", rf.me, rf.Entries)
+			// log.Printf("node %d add entry, mu entrys is %v", rf.me, rf.Entries)
 		}
 		rf.mu.Unlock()
 	}
@@ -437,6 +456,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		if agreeNum >= needWaitNum {
 			rf.mu.Lock()
 			rf.commitIndex = index
+			go rf.sendApplyMsg(index)
 			rf.nextIndex[rf.me] = index + 1
 			rf.mu.Unlock()
 			return index, term, isLeader
@@ -493,17 +513,14 @@ func (rf *Raft) startElection() {
 	rf.VotedForTerm = electionTerm + 1
 	rf.peerKind = 2
 	l := len(rf.Entries)
-	lastLogTerm := 0
-	if l > 0 {
-		lastLogTerm = rf.Entries[l-1].Term
-	}
+	lastLogTerm := rf.Entries[l-1].Term
 	rf.votedFor = rf.me
 	needWaitNum := int((len(rf.peers) + 1) / 2)
 	agreeNum := 1
 	agreeNumMu := sync.Mutex{}
 	peerNum := len(rf.peers)
 	startTime := getTimeNowMs()
-	// log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
+	log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
 
 	rf.mu.Unlock()
 
@@ -519,7 +536,7 @@ func (rf *Raft) startElection() {
 					req := RequestVoteArgs{
 						Term:         rf.VotedForTerm,
 						CandidateId:  rf.me,
-						LastLogIndex: l - 1,
+						LastLogIndex: l,
 						LastLogTerm:  lastLogTerm,
 					}
 					rep := RequestVoteReply{}
@@ -647,6 +664,7 @@ func (rf *Raft) listenElection() {
 							Term:         rf.currentTerm,
 							LeaderId:     rf.me,
 							PrevLogIndex: l - 1,
+							PrevLogTerm:  rf.Entries[l-1].Term,
 							Entries:      nil,
 							LeaderCommit: rf.commitIndex,
 						}
@@ -714,7 +732,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.me = me
 	rf.currentTerm = 1
 	rf.votedFor = -1
-	rf.commitIndex = -1
+	rf.commitIndex = 0
+	rf.Entries = append(rf.Entries, Entry{0, 0})
+	rf.applyCh = &applyCh
 
 	// Your initialization code here (2A, 2B, 2C).
 	rf.peerKind = 1                    // 初始化是follower
