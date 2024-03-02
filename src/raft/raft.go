@@ -432,7 +432,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		}
 		rf.mu.Lock()
 		needWaitNum := int((len(rf.peers) + 1) / 2)
-		agreeNum := 0
+		agreeNum := 1
 		peerKind := rf.peerKind
 		peerSize := len(rf.peers)
 		for i := 0; i < peerSize; i++ {
