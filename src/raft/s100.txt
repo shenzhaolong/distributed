@@ -1,0 +1,1227 @@
+Test (2B): basic agreement ...
+2024/03/02 17:06:10 1 begin
+2024/03/02 17:06:10 1 nd= 0
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:10 send 0 node
+2024/03/02 17:06:10 0 is not leader
+2024/03/02 17:06:10 send 1 node
+2024/03/02 17:06:10 1 is not leader
+2024/03/02 17:06:10 send 2 node
+2024/03/02 17:06:10 2 is not leader
+2024/03/02 17:06:11 send 0 node
+2024/03/02 17:06:11 0 is not leader
+2024/03/02 17:06:11 send 1 node
+2024/03/02 17:06:11 1 is not leader
+2024/03/02 17:06:11 send 2 node
+2024/03/02 17:06:11 2 is not leader
+2024/03/02 17:06:11 send 0 node
+2024/03/02 17:06:11 0 is not leader
+2024/03/02 17:06:11 send 1 node
+2024/03/02 17:06:11 1 is not leader
+2024/03/02 17:06:11 send 2 node
+2024/03/02 17:06:11 2 is not leader
+2024/03/02 17:06:11 send 0 node
+2024/03/02 17:06:11 0 is not leader
+2024/03/02 17:06:11 send 1 node
+2024/03/02 17:06:11 1 is not leader
+2024/03/02 17:06:11 send 2 node
+2024/03/02 17:06:11 2 is not leader
+2024/03/02 17:06:11 send 0 node
+2024/03/02 17:06:11 0 is not leader
+2024/03/02 17:06:11 send 1 node
+2024/03/02 17:06:11 1 is not leader
+2024/03/02 17:06:11 send 2 node
+2024/03/02 17:06:11 2 is not leader
+2024/03/02 17:06:11 send 0 node
+2024/03/02 17:06:11 0 is not leader
+2024/03/02 17:06:11 send 1 node
+2024/03/02 17:06:11 1 is not leader
+2024/03/02 17:06:11 send 2 node
+2024/03/02 17:06:11 node 0 term 2 election success
+2024/03/02 17:06:11 node 0 is leader for start
+2024/03/02 17:06:11 node 0 try send 0 index to 2
+2024/03/02 17:06:11 node 0 try send 0 index to 1
+2024/03/02 17:06:11 node 0 sent 0 index to 2 net success
+2024/03/02 17:06:11 node 0 sent 0 index to 2 success
+2024/03/02 17:06:11 node 0 sent 0 index to 1 net success
+2024/03/02 17:06:11 node 0 sent 0 index to 1 success
+2024/03/02 17:06:11 2 is leader, index is 0
+--- FAIL: TestBasicAgree2B (2.59s)
+    config.go:474: one(100) failed to reach agreement
+Test (2B): RPC byte count ...
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 2 is not leader
+2024/03/02 17:06:13 node 0 term 2 election success
+2024/03/02 17:06:13 send 0 node
+2024/03/02 17:06:13 0 is not leader
+2024/03/02 17:06:13 send 1 node
+2024/03/02 17:06:13 1 is not leader
+2024/03/02 17:06:13 send 2 node
+2024/03/02 17:06:13 node 0 is leader for start
+2024/03/02 17:06:13 node 0 try send 0 index to 2
+2024/03/02 17:06:13 node 0 try send 0 index to 1
+2024/03/02 17:06:13 node 0 sent 0 index to 2 net success
+2024/03/02 17:06:13 node 0 sent 0 index to 2 success
+2024/03/02 17:06:13 node 0 sent 0 index to 1 net success
+2024/03/02 17:06:13 node 0 sent 0 index to 1 success
+2024/03/02 17:06:13 2 is leader, index is 0
+--- FAIL: TestRPCBytes2B (2.59s)
+    config.go:474: one(99) failed to reach agreement
+Test (2B): agreement despite follower disconnection ...
+2024/03/02 17:06:15 send 0 node
+2024/03/02 17:06:15 0 is not leader
+2024/03/02 17:06:15 send 1 node
+2024/03/02 17:06:15 1 is not leader
+2024/03/02 17:06:15 send 2 node
+2024/03/02 17:06:15 2 is not leader
+2024/03/02 17:06:15 send 0 node
+2024/03/02 17:06:15 0 is not leader
+2024/03/02 17:06:15 send 1 node
+2024/03/02 17:06:15 1 is not leader
+2024/03/02 17:06:15 send 2 node
+2024/03/02 17:06:15 2 is not leader
+2024/03/02 17:06:15 send 0 node
+2024/03/02 17:06:15 0 is not leader
+2024/03/02 17:06:15 send 1 node
+2024/03/02 17:06:15 1 is not leader
+2024/03/02 17:06:15 send 2 node
+2024/03/02 17:06:15 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 1 is not leader
+2024/03/02 17:06:16 send 2 node
+2024/03/02 17:06:16 2 is not leader
+2024/03/02 17:06:16 node 2 term 2 election success
+2024/03/02 17:06:16 send 0 node
+2024/03/02 17:06:16 0 is not leader
+2024/03/02 17:06:16 send 1 node
+2024/03/02 17:06:16 node 2 is leader for start
+2024/03/02 17:06:16 node 2 try send 0 index to 1
+2024/03/02 17:06:16 node 2 try send 0 index to 0
+2024/03/02 17:06:16 node 2 sent 0 index to 1 net success
+2024/03/02 17:06:16 node 2 sent 0 index to 1 success
+2024/03/02 17:06:16 node 2 sent 0 index to 0 net success
+2024/03/02 17:06:16 node 2 sent 0 index to 0 success
+2024/03/02 17:06:16 1 is leader, index is 0
+--- FAIL: TestFailAgree2B (2.60s)
+    config.go:474: one(101) failed to reach agreement
+Test (2B): no agreement if too many followers disconnect ...
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:18 send 0 node
+2024/03/02 17:06:18 0 is not leader
+2024/03/02 17:06:18 send 1 node
+2024/03/02 17:06:18 1 is not leader
+2024/03/02 17:06:18 send 2 node
+2024/03/02 17:06:18 2 is not leader
+2024/03/02 17:06:18 send 3 node
+2024/03/02 17:06:18 3 is not leader
+2024/03/02 17:06:18 send 4 node
+2024/03/02 17:06:18 4 is not leader
+2024/03/02 17:06:19 node 1 term 2 election success
+2024/03/02 17:06:19 send 0 node
+2024/03/02 17:06:19 node 1 is leader for start
+2024/03/02 17:06:19 node 1 try send 0 index to 4
+2024/03/02 17:06:19 node 1 try send 0 index to 2
+2024/03/02 17:06:19 node 1 try send 0 index to 3
+2024/03/02 17:06:19 node 1 sent 0 index to 4 net success
+2024/03/02 17:06:19 node 1 sent 0 index to 4 success
+2024/03/02 17:06:19 node 1 try send 0 index to 0
+2024/03/02 17:06:19 node 1 sent 0 index to 2 net success
+2024/03/02 17:06:19 node 1 sent 0 index to 2 success
+2024/03/02 17:06:19 node 1 sent 0 index to 3 net success
+2024/03/02 17:06:19 node 1 sent 0 index to 3 success
+2024/03/02 17:06:19 node 1 sent 0 index to 0 net success
+2024/03/02 17:06:19 node 1 sent 0 index to 0 success
+2024/03/02 17:06:19 0 is leader, index is 0
+signal: interrupt
+FAIL	6824/raft	10.329s
+Test (2B): basic agreement ...
+2024/03/02 17:21:23 1 begin
+2024/03/02 17:21:23 1 nd= 0
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:23 send 0 node
+2024/03/02 17:21:23 0 is not leader
+2024/03/02 17:21:23 send 1 node
+2024/03/02 17:21:23 1 is not leader
+2024/03/02 17:21:23 send 2 node
+2024/03/02 17:21:23 2 is not leader
+2024/03/02 17:21:24 node 2 term 2 election success
+2024/03/02 17:21:24 send 0 node
+2024/03/02 17:21:24 0 is not leader
+2024/03/02 17:21:24 send 1 node
+2024/03/02 17:21:24 node 2 is leader for start
+2024/03/02 17:21:24 node 2 try send 0 index to 1
+2024/03/02 17:21:24 node 2 try send 0 index to 0
+2024/03/02 17:21:24 node 2 sent 0 index to 0 net success
+2024/03/02 17:21:24 node 2 sent 0 index to 0 success
+2024/03/02 17:21:24 node 2 sent 0 index to 1 net success
+2024/03/02 17:21:24 node 2 sent 0 index to 1 success
+2024/03/02 17:21:24 1 is leader, index is 0
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:24 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:25 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=100)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=100)
+--- FAIL: TestBasicAgree2B (2.59s)
+    config.go:475: one(100) failed to reach agreement
+Test (2B): RPC byte count ...
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 0 is not leader
+2024/03/02 17:21:26 send 1 node
+2024/03/02 17:21:26 1 is not leader
+2024/03/02 17:21:26 send 2 node
+2024/03/02 17:21:26 2 is not leader
+2024/03/02 17:21:26 node 1 term 2 election success
+2024/03/02 17:21:26 send 0 node
+2024/03/02 17:21:26 node 1 is leader for start
+2024/03/02 17:21:26 node 1 try send 0 index to 2
+2024/03/02 17:21:26 node 1 try send 0 index to 0
+2024/03/02 17:21:26 node 1 sent 0 index to 2 net success
+2024/03/02 17:21:26 node 1 sent 0 index to 2 success
+2024/03/02 17:21:26 node 1 sent 0 index to 0 net success
+2024/03/02 17:21:26 node 1 sent 0 index to 0 success
+2024/03/02 17:21:26 0 is leader, index is 0
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:26 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:27 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+2024/03/02 17:21:28 0 node think 0 is commited for %!s(int=99)
+--- FAIL: TestRPCBytes2B (2.60s)
+    config.go:475: one(99) failed to reach agreement
+Test (2B): agreement despite follower disconnection ...
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:28 send 0 node
+2024/03/02 17:21:28 0 is not leader
+2024/03/02 17:21:28 send 1 node
+2024/03/02 17:21:28 1 is not leader
+2024/03/02 17:21:28 send 2 node
+2024/03/02 17:21:28 2 is not leader
+2024/03/02 17:21:29 send 0 node
+2024/03/02 17:21:29 0 is not leader
+2024/03/02 17:21:29 send 1 node
+2024/03/02 17:21:29 1 is not leader
+2024/03/02 17:21:29 send 2 node
+2024/03/02 17:21:29 2 is not leader
+2024/03/02 17:21:29 send 0 node
+2024/03/02 17:21:29 0 is not leader
+2024/03/02 17:21:29 send 1 node
+2024/03/02 17:21:29 1 is not leader
+2024/03/02 17:21:29 send 2 node
+2024/03/02 17:21:29 2 is not leader
+2024/03/02 17:21:29 send 0 node
+2024/03/02 17:21:29 0 is not leader
+2024/03/02 17:21:29 send 1 node
+2024/03/02 17:21:29 1 is not leader
+2024/03/02 17:21:29 send 2 node
+2024/03/02 17:21:29 2 is not leader
+2024/03/02 17:21:29 send 0 node
+2024/03/02 17:21:29 0 is not leader
+2024/03/02 17:21:29 send 1 node
+2024/03/02 17:21:29 1 is not leader
+2024/03/02 17:21:29 send 2 node
+2024/03/02 17:21:29 2 is not leader
+2024/03/02 17:21:29 node 0 term 2 election success
+2024/03/02 17:21:29 send 0 node
+2024/03/02 17:21:29 0 is not leader
+2024/03/02 17:21:29 send 1 node
+2024/03/02 17:21:29 1 is not leader
+2024/03/02 17:21:29 send 2 node
+2024/03/02 17:21:29 node 0 is leader for start
+2024/03/02 17:21:29 node 0 try send 0 index to 2
+2024/03/02 17:21:29 node 0 try send 0 index to 1
+2024/03/02 17:21:29 node 0 sent 0 index to 1 net success
+2024/03/02 17:21:29 node 0 sent 0 index to 1 success
+2024/03/02 17:21:29 node 0 sent 0 index to 2 net success
+2024/03/02 17:21:29 node 0 sent 0 index to 2 success
+2024/03/02 17:21:29 2 is leader, index is 0
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:29 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:30 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=101)
+--- FAIL: TestFailAgree2B (2.61s)
+    config.go:475: one(101) failed to reach agreement
+Test (2B): no agreement if too many followers disconnect ...
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 0 is not leader
+2024/03/02 17:21:31 send 1 node
+2024/03/02 17:21:31 1 is not leader
+2024/03/02 17:21:31 send 2 node
+2024/03/02 17:21:31 2 is not leader
+2024/03/02 17:21:31 send 3 node
+2024/03/02 17:21:31 3 is not leader
+2024/03/02 17:21:31 send 4 node
+2024/03/02 17:21:31 4 is not leader
+2024/03/02 17:21:31 node 1 term 2 election success
+2024/03/02 17:21:31 send 0 node
+2024/03/02 17:21:31 node 1 is leader for start
+2024/03/02 17:21:31 node 1 try send 0 index to 4
+2024/03/02 17:21:31 node 1 try send 0 index to 0
+2024/03/02 17:21:31 node 1 try send 0 index to 2
+2024/03/02 17:21:31 node 1 try send 0 index to 3
+2024/03/02 17:21:31 node 1 sent 0 index to 0 net success
+2024/03/02 17:21:31 node 1 sent 0 index to 0 success
+2024/03/02 17:21:31 node 1 sent 0 index to 4 net success
+2024/03/02 17:21:31 node 1 sent 0 index to 4 success
+2024/03/02 17:21:31 node 1 sent 0 index to 2 net success
+2024/03/02 17:21:31 node 1 sent 0 index to 2 success
+2024/03/02 17:21:31 node 1 sent 0 index to 3 net success
+2024/03/02 17:21:31 node 1 sent 0 index to 3 success
+2024/03/02 17:21:31 0 is leader, index is 0
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:31 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:32 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+2024/03/02 17:21:33 0 node think 0 is commited for %!s(int=10)
+--- FAIL: TestFailNoAgree2B (2.59s)
+    config.go:475: one(10) failed to reach agreement
+Test (2B): concurrent Start()s ...
+2024/03/02 17:21:34 node 0 term 2 election success
+2024/03/02 17:21:34 node 0 is leader for start
+2024/03/02 17:21:34 node 0 try send 0 index to 2
+2024/03/02 17:21:34 node 0 try send 0 index to 1
+2024/03/02 17:21:34 node 0 sent 0 index to 2 net success
+2024/03/02 17:21:34 node 0 sent 0 index to 2 success
+2024/03/02 17:21:34 node 0 sent 0 index to 1 net success
+2024/03/02 17:21:34 node 0 sent 0 index to 1 success
+2024/03/02 17:21:34 node 0 is leader for start
+2024/03/02 17:21:34 node 0 try send 1 index to 2
+2024/03/02 17:21:34 node 0 try send 1 index to 1
+2024/03/02 17:21:35 check 50 times
+2024/03/02 17:21:35 check 50 times
+2024/03/02 17:21:35 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:35 check 50 times
+2024/03/02 17:21:35 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:35 check 50 times
+2024/03/02 17:21:35 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 100 times
+2024/03/02 17:21:36 check 100 times
+2024/03/02 17:21:36 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 100 times
+2024/03/02 17:21:36 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 100 times
+2024/03/02 17:21:36 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 150 times
+2024/03/02 17:21:36 check 150 times
+2024/03/02 17:21:36 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 150 times
+2024/03/02 17:21:36 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:36 check 150 times
+2024/03/02 17:21:36 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:37 check 200 times
+2024/03/02 17:21:37 check 200 times
+2024/03/02 17:21:37 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:37 check 200 times
+2024/03/02 17:21:37 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:37 check 200 times
+2024/03/02 17:21:37 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 250 times
+2024/03/02 17:21:38 check 250 times
+2024/03/02 17:21:38 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 250 times
+2024/03/02 17:21:38 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 250 times
+2024/03/02 17:21:38 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 300 times
+2024/03/02 17:21:38 check 300 times
+2024/03/02 17:21:38 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 300 times
+2024/03/02 17:21:38 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:38 check 300 times
+2024/03/02 17:21:38 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:39 check 350 times
+2024/03/02 17:21:39 check 350 times
+2024/03/02 17:21:39 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:39 check 350 times
+2024/03/02 17:21:39 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:39 check 350 times
+2024/03/02 17:21:39 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 400 times
+2024/03/02 17:21:40 check 400 times
+2024/03/02 17:21:40 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 400 times
+2024/03/02 17:21:40 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 400 times
+2024/03/02 17:21:40 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 450 times
+2024/03/02 17:21:40 check 450 times
+2024/03/02 17:21:40 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 450 times
+2024/03/02 17:21:40 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:40 check 450 times
+2024/03/02 17:21:40 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 500 times
+2024/03/02 17:21:41 check 500 times
+2024/03/02 17:21:41 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 500 times
+2024/03/02 17:21:41 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 500 times
+2024/03/02 17:21:41 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 550 times
+2024/03/02 17:21:41 check 550 times
+2024/03/02 17:21:41 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 550 times
+2024/03/02 17:21:41 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:41 check 550 times
+2024/03/02 17:21:41 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:42 check 600 times
+2024/03/02 17:21:42 check 600 times
+2024/03/02 17:21:42 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:42 check 600 times
+2024/03/02 17:21:42 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:42 check 600 times
+2024/03/02 17:21:42 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 650 times
+2024/03/02 17:21:43 check 650 times
+2024/03/02 17:21:43 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 650 times
+2024/03/02 17:21:43 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 650 times
+2024/03/02 17:21:43 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 700 times
+2024/03/02 17:21:43 check 700 times
+2024/03/02 17:21:43 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 700 times
+2024/03/02 17:21:43 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:43 check 700 times
+2024/03/02 17:21:43 2 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:44 check 750 times
+2024/03/02 17:21:44 check 750 times
+2024/03/02 17:21:44 0 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:44 check 750 times
+2024/03/02 17:21:44 1 match index is 0, need is 1 , agree num is 0
+2024/03/02 17:21:44 check 750 times
+2024/03/02 17:21:44 2 match index is 0, need is 1 , agree num is 0
+signal: interrupt
+FAIL	6824/raft	21.426s

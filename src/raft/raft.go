@@ -19,6 +19,7 @@ package raft
 
 import (
 	"6824/labrpc"
+	"log"
 	"math/rand"
 	"sync"
 	"sync/atomic"
@@ -106,6 +107,7 @@ type Raft struct {
 	// leader才有的状态
 	nextIndex  map[int]int
 	matchIndex map[int]int
+	startMutex sync.Mutex
 }
 
 // return currentTerm and whether this server
@@ -206,9 +208,11 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 }
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
+	log.Printf("2222 node %d get append entity request from %d", rf.me, args.LeaderId)
 	rf.mu.Lock()
+	log.Printf("node %d get append entity request from %d", rf.me, args.LeaderId)
 	reply.Term = rf.currentTerm
-	if args.Term < rf.currentTerm { // 忽略过期的消息
+	if args.Term < rf.currentTerm || args.PrevLogIndex > len(rf.Entries)-1 { // 忽略过期的消息
 		rf.mu.Unlock()
 		reply.Success = false
 		return
@@ -216,7 +220,8 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		rf.currentTerm = args.Term
 		rf.peerKind = 1
 		rf.votedFor = -1
-		if args.PrevLogIndex != -1 && rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm { // 忽略过期的日志
+		if len(rf.Entries)-1 >= args.PrevLogIndex && args.PrevLogIndex != -1 &&
+			rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm {
 			rf.mu.Unlock()
 			reply.Success = false
 			// 截断不匹配的所有日志
@@ -230,6 +235,8 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 			} else {
 				rf.commitIndex = args.LeaderCommit
 			}
+			log.Printf("node %d need update commitindex, %v, my commitindex is %d, my entry is %v",
+				rf.me, args, rf.commitIndex, rf.Entries)
 		}
 		if len(args.Entries) == 0 { // 心跳包
 			// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
@@ -238,10 +245,18 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 			rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
 			rf.peerKind = 1
 			rf.votedFor = -1
+			log.Printf("node %d get heart %v", rf.me, args)
 			rf.mu.Unlock()
 			return
+		} else {
+			log.Printf("node %d get entity from %d, args is %v", rf.me, args.LeaderId, args)
 		}
-		rf.Entries = append(rf.Entries, args.Entries...)
+		// 需要新增
+		if len(rf.Entries)-1 == args.PrevLogIndex {
+			rf.Entries = append(rf.Entries, args.Entries...)
+			log.Printf("node %d add entry, mu entrys is %v", rf.me, rf.Entries)
+		}
+		rf.mu.Unlock()
 	}
 }
 
@@ -286,80 +301,39 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 func (rf *Raft) agreementNode(target int) {
 	// 尝试从nextInt[target]复制到领导的最后一条日志
 	rf.mu.Lock()
-	for !rf.killed() && rf.nextIndex[target] != len(rf.Entries) && rf.peerKind == 3 {
-		idx := rf.nextIndex[target]
-		preTerm := -1
-		if idx != 0 {
-			preTerm = rf.Entries[idx-1].Term
-		}
-		req := AppendEntriesArgs{
-			Term:         rf.currentTerm,
-			LeaderId:     rf.me,
-			PrevLogIndex: idx - 1,
-			PrevLogTerm:  preTerm,
-			Entries:      rf.Entries[idx : idx+1],
-		}
-		rep := AppendEntriesReply{}
-		rf.mu.Unlock()
-		ok := rf.sendAppendEntity(target, &req, &rep)
-		if ok {
-			if rep.Success {
-				rf.mu.Lock()
-				rf.nextIndex[target] = idx + 1
-				rf.matchIndex[target] = idx
-				rf.mu.Unlock()
-				return
-			} else {
-				rf.mu.Lock()
-				if rep.Term > rf.currentTerm {
-					rf.currentTerm = rep.Term
-					rf.peerKind = 1
-					rf.votedFor = -1
-					rf.mu.Unlock()
-					return
-				} else {
-					rf.nextIndex[target]--
-					rf.mu.Unlock()
-				}
-			}
-		}
-	}
+	targetIndex := rf.nextIndex[target]
+	entryLen := len(rf.Entries)
+	peerKind := rf.peerKind
 	rf.mu.Unlock()
-}
-
-// 将第idx条日志复制到target节点
-func (rf *Raft) sendEntryByIdx(idx int, target int) {
-	for !rf.killed() {
+	for !rf.killed() && targetIndex != entryLen && peerKind == 3 {
 		rf.mu.Lock()
-		// 当前不是Leader，不允许复制
-		if rf.peerKind != 3 {
-			rf.mu.Unlock()
-			break
-		}
-		// 第一条日志
 		preTerm := -1
-		if idx != 0 {
-			preTerm = rf.Entries[idx-1].Term
+		if targetIndex != 0 {
+			preTerm = rf.Entries[targetIndex-1].Term
 		}
+		rf.mu.Unlock()
 		req := AppendEntriesArgs{
 			Term:         rf.currentTerm,
 			LeaderId:     rf.me,
-			PrevLogIndex: idx - 1,
+			PrevLogIndex: targetIndex - 1,
 			PrevLogTerm:  preTerm,
-			Entries:      rf.Entries[idx : idx+1],
+			Entries:      rf.Entries[targetIndex : targetIndex+1],
+			LeaderCommit: rf.commitIndex,
 		}
 		rep := AppendEntriesReply{}
-		rf.mu.Unlock()
-
+		log.Printf("node %d try send %d index to %d", rf.me, targetIndex, target)
 		ok := rf.sendAppendEntity(target, &req, &rep)
 		if ok {
+			log.Printf("node %d sent %d index to %d net success", rf.me, targetIndex, target)
 			if rep.Success {
+				log.Printf("node %d sent %d index to %d success", rf.me, targetIndex, target)
 				rf.mu.Lock()
-				rf.nextIndex[target] = idx + 1
-				rf.matchIndex[target] = idx
+				rf.nextIndex[target] = targetIndex + 1
+				rf.matchIndex[target] = targetIndex
 				rf.mu.Unlock()
 				return
 			} else {
+				log.Printf("node %d sent %d index to %d failed", rf.me, targetIndex, target)
 				rf.mu.Lock()
 				if rep.Term > rf.currentTerm {
 					rf.currentTerm = rep.Term
@@ -370,11 +344,16 @@ func (rf *Raft) sendEntryByIdx(idx int, target int) {
 				} else {
 					rf.nextIndex[target]--
 					rf.mu.Unlock()
-					rf.sendEntryByIdx(idx-1, target)
 				}
 			}
-
+		} else {
+			log.Printf("node %d send %d index to %d failed", rf.me, targetIndex, target)
 		}
+		rf.mu.Lock()
+		targetIndex = rf.nextIndex[target]
+		entryLen = len(rf.Entries)
+		peerKind = rf.peerKind
+		rf.mu.Unlock()
 	}
 }
 
@@ -391,6 +370,8 @@ func (rf *Raft) sendEntryByIdx(idx int, target int) {
 // term. the third return value is true if this server believes it is
 // the leader.
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
+	rf.startMutex.Lock()
+	defer rf.startMutex.Unlock()
 	index := -1
 	term := -1
 	isLeader := false
@@ -405,9 +386,12 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 			rf.mu.Unlock()
 			return index, term, isLeader
 		}
+		log.Printf("node %d is leader for start", rf.me)
 		isLeader = true
+		rf.Entries = append(rf.Entries, Entry{-1, nil})
 		rf.Entries[index].Term = term
 		rf.Entries[index].Command = command
+		rf.mu.Unlock()
 	}
 	rf.mu.Lock()
 	// 如果不提取缓存当前的Num，将导致在有成员退出后依然访问导致越界
@@ -420,22 +404,41 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	}
 
 	// 检测是否超过半数的节点已经完成了复制
-	rf.mu.Lock()
-	needWaitNum := int((len(rf.peers) + 1) / 2)
-	agreeNum := 0
-	for !rf.killed() && rf.peerKind == 3 {
-		rf.mu.Unlock()
+	cnt := 0
+	for !rf.killed() {
 		time.Sleep(time.Millisecond * time.Duration(STATE_CHECK_GAP))
-
+		cnt++
+		if cnt%50 == 0 {
+			log.Printf("check %d times", cnt)
+		}
 		rf.mu.Lock()
+		needWaitNum := int((len(rf.peers) + 1) / 2)
+		agreeNum := 0
+		peerKind := rf.peerKind
 		peerSize := len(rf.peers)
 		for i := 0; i < peerSize; i++ {
 			if rf.matchIndex[i] >= index {
 				agreeNum++
 			}
+			if cnt%50 == 0 {
+				log.Printf("check %d times", cnt)
+				log.Printf("%d match index is %d, need is %d , agree num is %d",
+					i, rf.matchIndex[i], index, agreeNum)
+
+			}
+		}
+		if peerKind != 3 {
+			rf.mu.Unlock()
+			return index, term, false
+		} else {
+			isLeader = true
 		}
 		rf.mu.Unlock()
-		if needWaitNum >= agreeNum {
+		if agreeNum >= needWaitNum {
+			rf.mu.Lock()
+			rf.commitIndex = index
+			rf.nextIndex[rf.me] = index + 1
+			rf.mu.Unlock()
 			return index, term, isLeader
 		}
 	}
@@ -525,16 +528,16 @@ func (rf *Raft) startElection() {
 					ok := rf.sendRequestVote(i, &req, &rep)
 					if ok {
 						// log.Printf("node %d get term %d election, node %d reply %d", rf.me, rf.VotedForTerm, i, rep.VoteGranted)
+						rf.mu.Lock()
 						if rep.VoteGranted == 1 {
 							agreeNumMu.Lock()
 							agreeNum += 1
 							agreeNumMu.Unlock()
 						} else if rep.Term > rf.VotedForTerm {
-							rf.mu.Lock()
 							rf.currentTerm = rep.Term
 							rf.peerKind = 1
-							rf.mu.Unlock()
 						}
+						rf.mu.Unlock()
 						break
 					} else {
 						// log.Printf("node %d to %d vote request for term %d is send fail", rf.me, rf.VotedForTerm, i)
@@ -567,8 +570,11 @@ func (rf *Raft) startElection() {
 			rf.mu.Lock()
 			rf.peerKind = 3
 			rf.currentTerm = rf.VotedForTerm
+			log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
 			// log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
 			entrySize, peerSize := len(rf.Entries), len(rf.peers)
+			rf.nextIndex = make(map[int]int)
+			rf.matchIndex = make(map[int]int)
 			for i := 0; i < peerSize; i++ {
 				rf.nextIndex[i] = entrySize
 				rf.matchIndex[i] = 0
@@ -635,7 +641,6 @@ func (rf *Raft) listenElection() {
 			for i := 0; i < peerNum; i++ {
 				if i != rf.me {
 					go func(i int) {
-
 						rf.mu.Lock()
 						l := len(rf.Entries)
 						appendEntriesArgs := AppendEntriesArgs{
@@ -653,10 +658,10 @@ func (rf *Raft) listenElection() {
 						rf.mu.Unlock()
 
 						appendEntriesReply := AppendEntriesReply{}
-						// log.Printf("leader %d send heart to %d", rf.me, i)
-
+						log.Printf("leader %d send heart to %d", rf.me, i)
 						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
 						if ok {
+							log.Printf("node %d send heart to %d, content is %v", rf.me, i, appendEntriesArgs)
 							rf.mu.Lock()
 							if rf.currentTerm < appendEntriesReply.Term {
 								rf.currentTerm = appendEntriesReply.Term
@@ -664,15 +669,31 @@ func (rf *Raft) listenElection() {
 							}
 							rf.mu.Unlock()
 						} else {
-							// log.Printf("Leader %d send to %d heart fail", rf.me, i)
+							log.Printf("Leader %d send to %d heart fail", rf.me, i)
 						}
 					}(i)
 				}
 			}
-			// 1000ms发一次心跳
+			// 200ms发一次心跳
 			time.Sleep(time.Duration(LEADER_HEART_GAP) * time.Millisecond)
 		}
 		time.Sleep(time.Millisecond * 100) // 100ms检测一次
+	}
+}
+
+// 检测 commitIndex和lastApplied 是否一致
+func (rf *Raft) listenApplied() {
+	for !rf.killed() {
+		rf.mu.Lock()
+		lastApplied := rf.lastApplied
+		if lastApplied != rf.commitIndex {
+			for i := lastApplied; i <= rf.commitIndex; i++ {
+				// 执行apply entry
+				lastApplied = i
+			}
+		}
+		rf.mu.Unlock()
+		time.Sleep(time.Millisecond * 1000) // 1000ms检测一次
 	}
 }
 
@@ -693,11 +714,13 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.me = me
 	rf.currentTerm = 1
 	rf.votedFor = -1
+	rf.commitIndex = -1
 
 	// Your initialization code here (2A, 2B, 2C).
 	rf.peerKind = 1                    // 初始化是follower
 	rf.lastLeaderTime = getTimeNowMs() // 初始化开启选举定时器
 	go rf.listenElection()
+	go rf.listenApplied()
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
