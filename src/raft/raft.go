@@ -109,7 +109,7 @@ type Raft struct {
 	// leader才有的状态
 	nextIndex  map[int]int
 	matchIndex map[int]int
-	startMutex sync.Mutex
+	startMutex []sync.Mutex
 	applyMap   map[int]bool
 }
 
@@ -310,13 +310,15 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 
 // 使得某个节点和自己同步
 func (rf *Raft) agreementNode(target int) {
-	rf.startMutex.Lock()
-	defer rf.startMutex.Unlock()
+	rf.startMutex[target].Lock()
+	defer log.Printf("leader %d end %d agreement", rf.me, target)
+	defer rf.startMutex[target].Unlock()
 	// 尝试从nextInt[target]复制到领导的最后一条日志
 	rf.mu.Lock()
 	targetIndex := rf.nextIndex[target]
 	entryLen := len(rf.Entries)
 	peerKind := rf.peerKind
+	log.Printf("leader %d start %d agreement", rf.me, target)
 	rf.mu.Unlock()
 	for !rf.killed() && targetIndex != entryLen && peerKind == 3 {
 		rf.mu.Lock()
@@ -736,7 +738,7 @@ func (rf *Raft) listenSendApply() {
 			rf.mu.Unlock()
 			*rf.applyCh <- applyMsg
 		}
-		time.Sleep(time.Millisecond * 500)
+		time.Sleep(time.Millisecond * 5)
 		rf.mu.Lock()
 		lastSendIndex = rf.lastSendApply
 		commitIndex = rf.commitIndex
@@ -767,6 +769,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.applyMap = make(map[int]bool)
 	rf.applyMap[0] = true
 	rf.lastSendApply = 0
+	for i := 0; i < len(rf.peers); i++ {
+		rf.startMutex = append(rf.startMutex, sync.Mutex{})
+	}
 
 	// Your initialization code here (2A, 2B, 2C).
 	rf.peerKind = 1                    // 初始化是follower
