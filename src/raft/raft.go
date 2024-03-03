@@ -223,19 +223,26 @@ func (rf *Raft) sendApplyMsg(index int) {
 }
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
-	log.Printf("2222 node %d get append entity request from %d", rf.me, args.LeaderId)
 	rf.mu.Lock()
 	log.Printf("node %d get append entity request from %d", rf.me, args.LeaderId)
 	reply.Term = rf.currentTerm
-	if args.Term < rf.currentTerm || args.PrevLogIndex > len(rf.Entries)-1 { // 忽略过期的消息
+	if args.Term < rf.currentTerm || len(rf.Entries)-1 < args.PrevLogIndex { // 忽略过期的消息
 		rf.mu.Unlock()
 		reply.Success = false
 		return
-	} else if args.Term >= rf.currentTerm {
+	}
+	if args.Term >= rf.currentTerm {
 		rf.currentTerm = args.Term
 		rf.peerKind = 1
 		rf.votedFor = -1
-		if len(rf.Entries)-1 >= args.PrevLogIndex && args.PrevLogIndex != -1 &&
+		rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
+
+		if len(rf.Entries)-1 < args.PrevLogIndex {
+			rf.mu.Unlock()
+			reply.Success = false
+			return
+		}
+		if len(rf.Entries)-1 >= args.PrevLogIndex &&
 			rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm {
 			rf.mu.Unlock()
 			reply.Success = false
@@ -260,10 +267,6 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		if len(args.Entries) == 0 { // 心跳包
 			// log.Printf("node %d get heart from %d, my term is %d and heart term is %d, my kind is %d",
 			//	rf.me, args.LeaderId, rf.currentTerm, args.Term, rf.peerKind)
-			rf.currentTerm = args.Term
-			rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
-			rf.peerKind = 1
-			rf.votedFor = -1
 			log.Printf("node %d get heart %v", rf.me, args)
 			rf.mu.Unlock()
 			return
@@ -676,7 +679,6 @@ func (rf *Raft) listenElection() {
 						rf.mu.Unlock()
 
 						appendEntriesReply := AppendEntriesReply{}
-						log.Printf("leader %d send heart to %d", rf.me, i)
 						ok := rf.sendAppendEntity(i, &appendEntriesArgs, &appendEntriesReply)
 						if ok {
 							log.Printf("node %d send heart to %d, content is %v", rf.me, i, appendEntriesArgs)
