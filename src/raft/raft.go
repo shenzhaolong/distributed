@@ -90,10 +90,11 @@ type Raft struct {
 	// state a Raft server must maintain.
 	applyCh *chan ApplyMsg
 	// 所有服务器都有的持久的状态
-	currentTerm  int
-	votedFor     int
-	VotedForTerm int
-	Entries      []Entry
+	currentTerm   int
+	votedFor      int
+	VotedForTerm  int
+	Entries       []Entry
+	lastSendApply int
 
 	leaderId int
 	// 1 follower 2 canadiate 3 leader
@@ -109,6 +110,7 @@ type Raft struct {
 	nextIndex  map[int]int
 	matchIndex map[int]int
 	startMutex sync.Mutex
+	applyMap   map[int]bool
 }
 
 // return currentTerm and whether this server
@@ -208,23 +210,9 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	reply.Term = rf.currentTerm
 }
 
-func (rf *Raft) sendApplyMsg(index int) {
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-	if index > rf.commitIndex {
-		log.Panicf("node %d need send apply msg out of index %d", rf.me, index)
-	}
-	applyMsg := ApplyMsg{
-		CommandValid: true,
-		Command:      rf.Entries[index].Command,
-		CommandIndex: index,
-	}
-	*rf.applyCh <- applyMsg
-}
-
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	rf.mu.Lock()
-	log.Printf("node %d get append entity request from %d", rf.me, args.LeaderId)
+	log.Printf("node %d get append entity request from %d, %v", rf.me, args.LeaderId, args.Entries)
 	reply.Term = rf.currentTerm
 	if args.Term < rf.currentTerm || len(rf.Entries)-1 < args.PrevLogIndex { // 忽略过期的消息
 		rf.mu.Unlock()
@@ -252,14 +240,10 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		}
 		reply.Success = true
 		if args.LeaderCommit > rf.commitIndex {
-			lastCommitIndex := rf.commitIndex
 			if args.PrevLogIndex+1 < args.LeaderCommit {
 				rf.commitIndex = args.PrevLogIndex + 1
 			} else {
 				rf.commitIndex = args.LeaderCommit
-			}
-			for i := lastCommitIndex + 1; i <= rf.commitIndex; i++ {
-				go rf.sendApplyMsg(i)
 			}
 			// log.Printf("node %d need update commitindex, %v, my commitindex is %d, my entry is %v",
 			// 	rf.me, args, rf.commitIndex, rf.Entries)
@@ -274,9 +258,14 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 			log.Printf("node %d get entity from %d", rf.me, args.LeaderId)
 		}
 		// 需要新增
-		if len(rf.Entries)-1 == args.PrevLogIndex {
-			rf.Entries = append(rf.Entries, args.Entries...)
-			// log.Printf("node %d add entry, mu entrys is %v", rf.me, rf.Entries)
+		for i := 0; i < len(args.Entries); i++ {
+			idx := i + args.PrevLogIndex + 1
+			if len(rf.Entries)-1 < idx {
+				rf.Entries = append(rf.Entries, args.Entries[i:i+1]...)
+				break
+			} else {
+				rf.Entries[idx] = args.Entries[i]
+			}
 		}
 		rf.mu.Unlock()
 	}
@@ -321,6 +310,8 @@ func (rf *Raft) sendAppendEntity(server int, args *AppendEntriesArgs, reply *App
 
 // 使得某个节点和自己同步
 func (rf *Raft) agreementNode(target int) {
+	rf.startMutex.Lock()
+	defer rf.startMutex.Unlock()
 	// 尝试从nextInt[target]复制到领导的最后一条日志
 	rf.mu.Lock()
 	targetIndex := rf.nextIndex[target]
@@ -333,25 +324,31 @@ func (rf *Raft) agreementNode(target int) {
 		if targetIndex != 0 {
 			preTerm = rf.Entries[targetIndex-1].Term
 		}
-		rf.mu.Unlock()
 		req := AppendEntriesArgs{
 			Term:         rf.currentTerm,
 			LeaderId:     rf.me,
 			PrevLogIndex: targetIndex - 1,
 			PrevLogTerm:  preTerm,
-			Entries:      rf.Entries[targetIndex : targetIndex+1],
+			Entries:      [](Entry){rf.Entries[targetIndex]},
 			LeaderCommit: rf.commitIndex,
 		}
+		log.Printf("node %d before copy %v", rf.me, rf.Entries)
 		rep := AppendEntriesReply{}
-		log.Printf("node %d try send %d index to %d", rf.me, targetIndex, target)
+		log.Printf("node %d try send %d index to %d, %v", rf.me, targetIndex, target, req)
+		log.Printf("node %d after copy %v", rf.me, rf.Entries)
+		rf.mu.Unlock()
 		ok := rf.sendAppendEntity(target, &req, &rep)
 		if ok {
 			log.Printf("node %d sent %d index to %d net success", rf.me, targetIndex, target)
 			if rep.Success {
 				log.Printf("node %d sent %d index to %d success", rf.me, targetIndex, target)
 				rf.mu.Lock()
-				rf.nextIndex[target] = targetIndex + 1
-				rf.matchIndex[target] = targetIndex
+				if rf.nextIndex[target] < targetIndex+1 {
+					rf.nextIndex[target] = targetIndex + 1
+				}
+				if rf.matchIndex[target] < targetIndex {
+					rf.matchIndex[target] = targetIndex
+				}
 				rf.mu.Unlock()
 				return
 			} else {
@@ -377,6 +374,48 @@ func (rf *Raft) agreementNode(target int) {
 		peerKind = rf.peerKind
 		rf.mu.Unlock()
 	}
+
+	// 检测是否超过半数的节点已经完成了复制
+}
+
+func (rf *Raft) listenCommitIndex(index int) {
+	// 检测是否超过半数的节点已经完成了复制
+	cnt := 0
+	for !rf.killed() {
+		time.Sleep(time.Millisecond * time.Duration(STATE_CHECK_GAP))
+		cnt++
+		rf.mu.Lock()
+		needWaitNum := int((len(rf.peers) + 1) / 2)
+		agreeNum := 1
+		peerKind := rf.peerKind
+		peerSize := len(rf.peers)
+		for i := 0; i < peerSize; i++ {
+			if rf.matchIndex[i] >= index {
+				agreeNum++
+				log.Printf("leader %d check for index %d, %d node is match, %d",
+					rf.me, index, i, rf.matchIndex[i])
+			}
+			if cnt%5 == 0 {
+				log.Printf("check %d times", cnt)
+				log.Printf("%d match index is %d, need is %d , agree num is %d",
+					i, rf.matchIndex[i], index, agreeNum)
+
+			}
+		}
+		if peerKind != 3 {
+			rf.mu.Unlock()
+			return
+		}
+		rf.mu.Unlock()
+		if agreeNum >= needWaitNum {
+			rf.mu.Lock()
+			log.Printf("leader %d konw %d index %v is commited, agree is %d, need is %d ",
+				rf.me, index, rf.Entries, agreeNum, needWaitNum)
+			rf.commitIndex = index
+			rf.mu.Unlock()
+			return
+		}
+	}
 }
 
 // the service using Raft (e.g. a k/v server) wants to start
@@ -392,8 +431,6 @@ func (rf *Raft) agreementNode(target int) {
 // term. the third return value is true if this server believes it is
 // the leader.
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
-	rf.startMutex.Lock()
-	defer rf.startMutex.Unlock()
 	index := -1
 	term := -1
 	isLeader := false
@@ -401,18 +438,20 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	// Your code here (2B).
 	if !rf.killed() {
 		rf.mu.Lock()
-		term = rf.currentTerm
-		index = rf.nextIndex[rf.me]
 		if rf.peerKind != 3 {
 			isLeader = false
 			rf.mu.Unlock()
 			return index, term, isLeader
 		}
-		log.Printf("node %d is leader for start", rf.me)
+		term = rf.currentTerm
+		index = rf.nextIndex[rf.me]
+		rf.nextIndex[rf.me]++
 		isLeader = true
 		rf.Entries = append(rf.Entries, Entry{-1, nil})
 		rf.Entries[index].Term = term
 		rf.Entries[index].Command = command
+		log.Printf("node %d is leader for idx %d entry %v",
+			rf.me, index, rf.Entries)
 		rf.mu.Unlock()
 	}
 	rf.mu.Lock()
@@ -424,48 +463,9 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 			go rf.agreementNode(i)
 		}
 	}
-
-	// 检测是否超过半数的节点已经完成了复制
-	cnt := 0
-	for !rf.killed() {
-		time.Sleep(time.Millisecond * time.Duration(STATE_CHECK_GAP))
-		cnt++
-		if cnt%50 == 0 {
-			log.Printf("check %d times", cnt)
-		}
-		rf.mu.Lock()
-		needWaitNum := int((len(rf.peers) + 1) / 2)
-		agreeNum := 1
-		peerKind := rf.peerKind
-		peerSize := len(rf.peers)
-		for i := 0; i < peerSize; i++ {
-			if rf.matchIndex[i] >= index {
-				agreeNum++
-			}
-			if cnt%50 == 0 {
-				log.Printf("check %d times", cnt)
-				log.Printf("%d match index is %d, need is %d , agree num is %d",
-					i, rf.matchIndex[i], index, agreeNum)
-
-			}
-		}
-		if peerKind != 3 {
-			rf.mu.Unlock()
-			return index, term, false
-		} else {
-			isLeader = true
-		}
-		rf.mu.Unlock()
-		if agreeNum >= needWaitNum {
-			rf.mu.Lock()
-			rf.commitIndex = index
-			go rf.sendApplyMsg(index)
-			rf.nextIndex[rf.me] = index + 1
-			rf.mu.Unlock()
-			return index, term, isLeader
-		}
-	}
-	return index, term, false
+	go rf.listenCommitIndex(index)
+	defer log.Printf("node %d finish start with entry %v", rf.me, command)
+	return index, term, true
 }
 
 // the tester doesn't halt goroutines created by Raft after each test,
@@ -523,7 +523,7 @@ func (rf *Raft) startElection() {
 	agreeNumMu := sync.Mutex{}
 	peerNum := len(rf.peers)
 	startTime := getTimeNowMs()
-	log.Printf("node %d start term %d election", rf.me, rf.currentTerm)
+	log.Printf("node %d start term %d election", rf.me, rf.VotedForTerm)
 
 	rf.mu.Unlock()
 
@@ -590,13 +590,13 @@ func (rf *Raft) startElection() {
 			rf.mu.Lock()
 			rf.peerKind = 3
 			rf.currentTerm = rf.VotedForTerm
-			log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
+			log.Printf("node %d term %d election success", rf.me, rf.VotedForTerm)
 			// log.Printf("node %d term %d election success", rf.me, rf.currentTerm)
-			entrySize, peerSize := len(rf.Entries), len(rf.peers)
+			peerSize := len(rf.peers)
 			rf.nextIndex = make(map[int]int)
 			rf.matchIndex = make(map[int]int)
 			for i := 0; i < peerSize; i++ {
-				rf.nextIndex[i] = entrySize
+				rf.nextIndex[i] = rf.commitIndex + 1
 				rf.matchIndex[i] = 0
 			}
 			rf.mu.Unlock()
@@ -717,6 +717,33 @@ func (rf *Raft) listenApplied() {
 	}
 }
 
+func (rf *Raft) listenSendApply() {
+	rf.mu.Lock()
+	lastSendIndex := rf.lastSendApply
+	commitIndex := rf.commitIndex
+	rf.mu.Unlock()
+	for !rf.killed() {
+		for lastSendIndex < commitIndex {
+			rf.mu.Lock()
+			rf.lastSendApply++
+			lastSendIndex++
+			applyMsg := ApplyMsg{
+				CommandValid: true,
+				Command:      rf.Entries[lastSendIndex].Command,
+				CommandIndex: lastSendIndex,
+			}
+			log.Printf("node %d send apply message %v", rf.me, applyMsg.Command)
+			rf.mu.Unlock()
+			*rf.applyCh <- applyMsg
+		}
+		time.Sleep(time.Millisecond * 500)
+		rf.mu.Lock()
+		lastSendIndex = rf.lastSendApply
+		commitIndex = rf.commitIndex
+		rf.mu.Unlock()
+	}
+}
+
 // the service or tester wants to create a Raft server. the ports
 // of all the Raft servers (including this one) are in peers[]. this
 // server's port is peers[me]. all the servers' peers[] arrays
@@ -737,12 +764,16 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.commitIndex = 0
 	rf.Entries = append(rf.Entries, Entry{0, 0})
 	rf.applyCh = &applyCh
+	rf.applyMap = make(map[int]bool)
+	rf.applyMap[0] = true
+	rf.lastSendApply = 0
 
 	// Your initialization code here (2A, 2B, 2C).
 	rf.peerKind = 1                    // 初始化是follower
 	rf.lastLeaderTime = getTimeNowMs() // 初始化开启选举定时器
 	go rf.listenElection()
 	go rf.listenApplied()
+	go rf.listenSendApply()
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())

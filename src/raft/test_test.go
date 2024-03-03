@@ -101,11 +101,12 @@ func TestBasicAgree2B(t *testing.T) {
 
 	iters := 3
 	for index := 1; index < iters+1; index++ {
+		log.Println(index, "begin")
 		nd, _ := cfg.nCommitted(index)
 		if nd > 0 {
 			t.Fatalf("some have committed before Start()")
 		}
-
+		log.Println(index, "nd=", nd)
 		xindex := cfg.one(index*100, servers, false)
 		if xindex != index {
 			t.Fatalf("got index %v but expected %v", xindex, index)
@@ -183,6 +184,7 @@ func TestFailAgree2B(t *testing.T) {
 }
 
 func TestFailNoAgree2B(t *testing.T) {
+	log.SetPrefix("2B 4: ")
 	servers := 5
 	cfg := make_config(t, servers, false)
 	defer cfg.cleanup()
@@ -193,11 +195,13 @@ func TestFailNoAgree2B(t *testing.T) {
 
 	// 3 of 5 followers disconnect
 	leader := cfg.checkOneLeader()
+	log.Printf("first leader is %d", leader)
 	cfg.disconnect((leader + 1) % servers)
 	cfg.disconnect((leader + 2) % servers)
 	cfg.disconnect((leader + 3) % servers)
 
 	index, _, ok := cfg.rafts[leader].Start(20)
+	log.Printf("20 entry index is %d, ok is %v", index, ok)
 	if ok != true {
 		t.Fatalf("leader rejected Start()")
 	}
@@ -211,7 +215,7 @@ func TestFailNoAgree2B(t *testing.T) {
 	if n > 0 {
 		t.Fatalf("%v committed but no majority", n)
 	}
-
+	log.Printf("check index %d is not committed, start connect", index)
 	// repair
 	cfg.connect((leader + 1) % servers)
 	cfg.connect((leader + 2) % servers)
@@ -221,6 +225,7 @@ func TestFailNoAgree2B(t *testing.T) {
 	// among their own ranks, forgetting index 2.
 	leader2 := cfg.checkOneLeader()
 	index2, _, ok2 := cfg.rafts[leader2].Start(30)
+	log.Printf("new leader is %d, index2 is %d", leader2, index2)
 	if ok2 == false {
 		t.Fatalf("leader2 rejected Start()")
 	}

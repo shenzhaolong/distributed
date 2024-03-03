@@ -446,7 +446,7 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 				log.Printf("send %d node", si)
 				index1, _, ok := rf.Start(cmd)
 				if ok {
-					log.Printf("%d is leader, index is %d", si, index1)
+					log.Printf("%d is leader, index is %d, cmd is %v", starts, index1, cmd)
 					index = index1
 					break
 				} else {
@@ -461,7 +461,7 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 			t1 := time.Now()
 			for time.Since(t1).Seconds() < 2 {
 				nd, cmd1 := cfg.nCommitted(index)
-				log.Printf("%d node think %d is commited", nd, index)
+				log.Printf("%d node think %d, %v is commited", nd, index, cmd1)
 				if nd > 0 && nd >= expectedServers {
 					// committed
 					if cmd1 == cmd {

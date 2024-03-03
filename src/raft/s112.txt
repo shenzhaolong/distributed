@@ -1,0 +1,404 @@
+Test (2B): no agreement if too many followers disconnect ...
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 2 is not leader
+2B 4: 2024/03/03 18:01:28 send 3 node
+2B 4: 2024/03/03 18:01:28 3 is not leader
+2B 4: 2024/03/03 18:01:28 send 4 node
+2B 4: 2024/03/03 18:01:28 4 is not leader
+2B 4: 2024/03/03 18:01:28 node 3 start term 2 election
+2B 4: 2024/03/03 18:01:28 node 3 term 2 election success
+2B 4: 2024/03/03 18:01:28 node 4 start term 2 election
+2B 4: 2024/03/03 18:01:28 node 4 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 4 get heart &{2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 1 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 1 get heart &{2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 3 send heart to 4, content is {2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 2 get heart &{2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 0 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 0 get heart &{2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 3 send heart to 1, content is {2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 3 send heart to 2, content is {2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 node 3 send heart to 0, content is {2 3 0 0 [] 0}
+2B 4: 2024/03/03 18:01:28 send 0 node
+2B 4: 2024/03/03 18:01:28 0 is not leader
+2B 4: 2024/03/03 18:01:28 send 1 node
+2B 4: 2024/03/03 18:01:28 1 is not leader
+2B 4: 2024/03/03 18:01:28 send 2 node
+2B 4: 2024/03/03 18:01:28 node 3 is leader for idx 1 entry [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 finish start with entry 10
+2B 4: 2024/03/03 18:01:28 3 is leader, index is 1, cmd is 10
+2B 4: 2024/03/03 18:01:28 0 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 node 3 before copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 try send 1 index to 0, {2 3 0 0 [{2 10}] 0}
+2B 4: 2024/03/03 18:01:28 node 3 after copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 before copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 try send 1 index to 1, {2 3 0 0 [{2 10}] 0}
+2B 4: 2024/03/03 18:01:28 node 3 after copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 before copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 try send 1 index to 2, {2 3 0 0 [{2 10}] 0}
+2B 4: 2024/03/03 18:01:28 node 3 after copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 before copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 3 try send 1 index to 4, {2 3 0 0 [{2 10}] 0}
+2B 4: 2024/03/03 18:01:28 node 3 after copy [{0 0} {2 10}]
+2B 4: 2024/03/03 18:01:28 node 0 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 0 get entity from 3
+2B 4: 2024/03/03 18:01:28 node 1 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 1 get entity from 3
+2B 4: 2024/03/03 18:01:28 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 2 get entity from 3
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 1 net success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 1 success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 0 net success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 0 success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 2 net success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 2 success
+2B 4: 2024/03/03 18:01:28 node 4 get append entity request from 3
+2B 4: 2024/03/03 18:01:28 node 4 get entity from 3
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 4 net success
+2B 4: 2024/03/03 18:01:28 node 3 sent 1 index to 4 success
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:28 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:29 1 node think 1 is commited
+2B 4: 2024/03/03 18:01:29 node 0 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 1 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 1 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 0 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 2 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 4 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 4 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 1, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 0, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 2, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 4, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 5 node think 1 is commited
+2B 4: 2024/03/03 18:01:29 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 1 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 2 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 4 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 4 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 1 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 0 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 0 get heart &{2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 1, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 0, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 4, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 2, content is {2 3 1 2 [] 1}
+2B 4: 2024/03/03 18:01:29 first leader is 3
+2B 4: 2024/03/03 18:01:29 node 3 is leader for idx 2 entry [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 finish start with entry 20
+2B 4: 2024/03/03 18:01:29 20 entry index is 2, ok is true
+2B 4: 2024/03/03 18:01:29 node 3 before copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 try send 2 index to 0, {2 3 1 2 [{2 20}] 1}
+2B 4: 2024/03/03 18:01:29 node 3 after copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 before copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 try send 2 index to 1, {2 3 1 2 [{2 20}] 1}
+2B 4: 2024/03/03 18:01:29 node 3 after copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 before copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 try send 2 index to 2, {2 3 1 2 [{2 20}] 1}
+2B 4: 2024/03/03 18:01:29 node 3 after copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 before copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 3 try send 2 index to 4, {2 3 1 2 [{2 20}] 1}
+2B 4: 2024/03/03 18:01:29 node 3 after copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:29 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 2 get entity from 3
+2B 4: 2024/03/03 18:01:29 node 3 sent 2 index to 2 net success
+2B 4: 2024/03/03 18:01:29 node 3 sent 2 index to 2 success
+2B 4: 2024/03/03 18:01:29 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 4 start term 3 election
+2B 4: 2024/03/03 18:01:29 Leader 3 send to 1 heart fail
+2B 4: 2024/03/03 18:01:29 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:29 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:29 node 1 start term 3 election
+2B 4: 2024/03/03 18:01:30 node 0 start term 3 election
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 0 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 1 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 2 match index is 2, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 3 match index is 0, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 check 50 times
+2B 4: 2024/03/03 18:01:30 4 match index is 1, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:30 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 Leader 3 send to 4 heart fail
+2B 4: 2024/03/03 18:01:30 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:30 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 node 3 send 2 index to 0 failed
+2B 4: 2024/03/03 18:01:30 node 3 before copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:30 node 3 try send 2 index to 0, {2 3 1 2 [{2 20}] 1}
+2B 4: 2024/03/03 18:01:30 node 3 after copy [{0 0} {2 10} {2 20}]
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 0 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 1 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 2 match index is 2, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 3 match index is 0, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 check 100 times
+2B 4: 2024/03/03 18:01:30 4 match index is 1, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:30 node 4 start term 4 election
+2B 4: 2024/03/03 18:01:30 node 1 start term 4 election
+2B 4: 2024/03/03 18:01:30 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:30 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:30 node 0 start term 4 election
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 0 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 1 match index is 1, need is 2 , agree num is 1
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 2 match index is 2, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 3 match index is 0, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:31 check 150 times
+2B 4: 2024/03/03 18:01:31 4 match index is 1, need is 2 , agree num is 2
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 check index 2 is not committed, start connect
+2B 4: 2024/03/03 18:01:31 Leader 3 send to 4 heart fail
+2B 4: 2024/03/03 18:01:31 node 4 start term 5 election
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 4 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 0 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 1 get append entity request from 3
+2B 4: 2024/03/03 18:01:31 node 2 get heart &{2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 0, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 4, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 2, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 send heart to 1, content is {2 3 2 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 1 start term 5 election
+2B 4: 2024/03/03 18:01:31 node 0 start term 6 election
+2B 4: 2024/03/03 18:01:31 node 0 term 6 election success
+
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 4 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 1 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 1 get heart &{6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 2 get heart &{6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 3 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 3 get heart &{6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 0 send heart to 1, content is {6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 4 get heart &{6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 0 send heart to 2, content is {6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 0 send heart to 3, content is {6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 0 send heart to 4, content is {6 0 1 2 [] 1}
+2B 4: 2024/03/03 18:01:31 node 0 is leader for idx 2 entry [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 finish start with entry 30
+2B 4: 2024/03/03 18:01:31 new leader is 0, index2 is 2
+
+2B 4: 2024/03/03 18:01:31 send 0 node
+2B 4: 2024/03/03 18:01:31 0 is not leader
+2B 4: 2024/03/03 18:01:31 send 1 node
+2B 4: 2024/03/03 18:01:31 1 is not leader
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 3, {6 0 1 2 [{6 30}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 send 2 node
+2B 4: 2024/03/03 18:01:31 2 is not leader
+2B 4: 2024/03/03 18:01:31 send 3 node
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 3 is not leader
+2B 4: 2024/03/03 18:01:31 send 4 node
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 1, {6 0 1 2 [{6 30}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 4, {6 0 1 2 [{6 30}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 3 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 3 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 2, {6 0 1 2 [{6 30}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 30}]
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 3 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 3 success
+2B 4: 2024/03/03 18:01:31 node 1 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 0 is leader for idx 2 entry [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 1 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 0 finish start with entry 1000
+2B 4: 2024/03/03 18:01:31 0 is leader, index is 2, cmd is 1000
+2B 4: 2024/03/03 18:01:31 0 node think 2 is commited
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 2, {6 0 1 2 [{6 1000}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 4 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 4 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 2 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 1, {6 0 1 2 [{6 1000}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 1 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 1 success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 4 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 4 success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 2 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 2 success
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 2 index to 4, {6 0 1 2 [{6 1000}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 before copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 0 try send 3 index to 3, {6 0 2 6 [{-1 <nil>}] 1}
+2B 4: 2024/03/03 18:01:31 node 0 after copy [{0 0} {2 10} {6 1000} {-1 <nil>}]
+2B 4: 2024/03/03 18:01:31 node 1 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 1 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 2 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 2 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 1 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 1 success
+2B 4: 2024/03/03 18:01:31 node 4 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 4 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 3 get append entity request from 0
+2B 4: 2024/03/03 18:01:31 node 3 get entity from 0
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 2 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 2 success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 4 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 2 index to 4 success
+2B 4: 2024/03/03 18:01:31 node 0 sent 3 index to 3 net success
+2B 4: 2024/03/03 18:01:31 node 0 sent 3 index to 3 success
+2B 4: 2024/03/03 18:01:31 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 1 node think 2 is commited
+2B 4: 2024/03/03 18:01:32 node 4 get append entity request from 0
+2B 4: 2024/03/03 18:01:32 node 2 get append entity request from 0
+2B 4: 2024/03/03 18:01:32 node 3 get append entity request from 0
+2B 4: 2024/03/03 18:01:32 node 1 get append entity request from 0
+2B 4: 2024/03/03 18:01:32 node 3 get heart &{6 0 3 -1 [] 2}
+2B 4: 2024/03/03 18:01:32 node 0 send heart to 4, content is {6 0 3 -1 [] 2}
+2B 4: 2024/03/03 18:01:32 node 0 send heart to 2, content is {6 0 3 -1 [] 2}
+2B 4: 2024/03/03 18:01:32 apply error: commit index=2 server=3 30 != server=0 1000
+exit status 1
+FAIL	6824/raft	3.990s
