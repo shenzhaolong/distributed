@@ -1,0 +1,381 @@
+Test (2B): rejoin of partitioned leader ...
+2024/03/04 19:58:31 node 0 start term 2 election
+2024/03/04 19:58:31 node 2 get vote request from 0 with &{2 0 0 0}, my term is 1 and my commit id 0
+2024/03/04 19:58:31 node 1 get vote request from 0 with &{2 0 0 0}, my term is 1 and my commit id 0
+2024/03/04 19:58:31 node 0 term 2 election success
+2024/03/04 19:58:31 node 2 start term 2 election
+2024/03/04 19:58:31 node 0 get vote request from 2 with &{2 2 0 0}, my term is 2 and my commit id 0
+2024/03/04 19:58:31 node 1 get append entity request from 0, []
+2024/03/04 19:58:31 node 1 get heart &{2 0 0 0 [] 0}
+2024/03/04 19:58:31 node 2 get append entity request from 0, []
+2024/03/04 19:58:31 node 2 get heart &{2 0 0 0 [] 0}
+2024/03/04 19:58:31 node 1 get vote request from 2 with &{2 2 0 0}, my term is 2 and my commit id 0
+2024/03/04 19:58:31 node 0 send heart to 2, content is {2 0 0 0 [] 0}
+2024/03/04 19:58:31 node 0 send heart to 1, content is {2 0 0 0 [] 0}
+2024/03/04 19:58:31 node 0 is leader for idx 1 entry [{0 0} {2 101}]
+2024/03/04 19:58:31 node 0 finish start with entry 101
+2024/03/04 19:58:31 0 is leader, index is 1, cmd is 101
+2024/03/04 19:58:31 leader 0 start 1 agreement
+2024/03/04 19:58:31 node 0 before copy [{0 0} {2 101}]
+2024/03/04 19:58:31 node 0 try send 1 index to 1, {2 0 0 0 [{2 101}] 0}
+2024/03/04 19:58:31 node 0 after copy [{0 0} {2 101}]
+2024/03/04 19:58:31 leader 0 start 2 agreement
+2024/03/04 19:58:31 node 0 before copy [{0 0} {2 101}]
+2024/03/04 19:58:31 node 0 try send 1 index to 2, {2 0 0 0 [{2 101}] 0}
+2024/03/04 19:58:31 node 0 after copy [{0 0} {2 101}]
+2024/03/04 19:58:31 node 1 get append entity request from 0, [{2 101}]
+2024/03/04 19:58:31 node 1 get entity from 0
+2024/03/04 19:58:31 node 0 sent 1 index to 1 net success
+2024/03/04 19:58:31 node 0 sent 1 index to 1 success
+2024/03/04 19:58:31 leader 0 end 1 agreement
+2024/03/04 19:58:31 node 2 get append entity request from 0, [{2 101}]
+2024/03/04 19:58:31 node 2 get entity from 0
+2024/03/04 19:58:31 node 0 sent 1 index to 2 net success
+2024/03/04 19:58:31 node 0 sent 1 index to 2 success
+2024/03/04 19:58:31 leader 0 end 2 agreement
+2024/03/04 19:58:31 leader 0 check for index 1, 1 node is match, 1
+2024/03/04 19:58:31 leader 0 check for index 1, 2 node is match, 1
+2024/03/04 19:58:31 leader 0 konw 1 index [{0 0} {2 101}] is commited, agree is 3, need is 2 
+2024/03/04 19:58:31 node 0 send apply message 101
+2024/03/04 19:58:32 node 1 get append entity request from 0, []
+2024/03/04 19:58:32 node 1 get heart &{2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 2 get append entity request from 0, []
+2024/03/04 19:58:32 node 2 get heart &{2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 0 send heart to 1, content is {2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 0 send heart to 2, content is {2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 1 send apply message 101
+2024/03/04 19:58:32 node 2 send apply message 101
+2024/03/04 19:58:32 node 1 get append entity request from 0, []
+2024/03/04 19:58:32 node 1 get heart &{2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 2 get append entity request from 0, []
+2024/03/04 19:58:32 node 2 get heart &{2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 0 send heart to 1, content is {2 0 1 2 [] 1}
+2024/03/04 19:58:32 node 0 send heart to 2, content is {2 0 1 2 [] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 leader 0 is disconnect
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 is leader for idx 2 entry [{0 0} {2 101} {2 102}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 finish start with entry 102
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 is leader for idx 3 entry [{0 0} {2 101} {2 102} {2 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 finish start with entry 103
+leader 0 disconnected: 2024/03/04 19:58:32 leader 0 start 1 agreement
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 before copy [{0 0} {2 101} {2 102} {2 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 try send 2 index to 1, {2 0 1 2 [{2 102}] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 after copy [{0 0} {2 101} {2 102} {2 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 leader 0 start 2 agreement
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 before copy [{0 0} {2 101} {2 102} {2 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 try send 2 index to 2, {2 0 1 2 [{2 102}] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 after copy [{0 0} {2 101} {2 102} {2 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 is leader for idx 4 entry [{0 0} {2 101} {2 102} {2 103} {2 104}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 0 finish start with entry 104
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 start term 3 election
+leader 0 disconnected: 2024/03/04 19:58:32 node 1 get vote request from 2 with &{3 2 1 2}, my term is 2 and my commit id 1
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 term 3 election success
+leader 0 disconnected: 2024/03/04 19:58:32 node 1 get append entity request from 2, []
+leader 0 disconnected: 2024/03/04 19:58:32 node 1 get heart &{3 2 1 2 [] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 send heart to 1, content is {3 2 1 2 [] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 is leader for idx 2 entry [{0 0} {2 101} {3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 finish start with entry 103
+leader 0 disconnected: 2024/03/04 19:58:32 2 is leader, index is 2, cmd is 103
+leader 0 disconnected: 2024/03/04 19:58:32 leader 2 start 0 agreement
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 try send 2 index to 0, {3 2 1 2 [{3 103}] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 leader 2 start 1 agreement
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 try send 2 index to 1, {3 2 1 2 [{3 103}] 1}
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 1 get append entity request from 2, [{3 103}]
+leader 0 disconnected: 2024/03/04 19:58:32 node 1 get entity from 2
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 sent 2 index to 1 net success
+leader 0 disconnected: 2024/03/04 19:58:32 node 2 sent 2 index to 1 success
+leader 0 disconnected: 2024/03/04 19:58:32 leader 2 end 1 agreement
+leader 0 disconnected: 2024/03/04 19:58:32 leader 2 check for index 2, 1 node is match, 2
+leader 0 disconnected: 2024/03/04 19:58:32 leader 2 konw 2 index [{0 0} {2 101} {3 103}] is commited, agree is 2, need is 2 
+leader 0 disconnected: 2024/03/04 19:58:33 node 2 send apply message 103
+leader 0 disconnected: 2024/03/04 19:58:33 node 1 get append entity request from 2, []
+leader 0 disconnected: 2024/03/04 19:58:33 node 1 get heart &{3 2 2 3 [] 2}
+leader 0 disconnected: 2024/03/04 19:58:33 node 2 send heart to 1, content is {3 2 2 3 [] 2}
+leader 0 disconnected: 2024/03/04 19:58:33 node 1 send apply message 103
+leader 0 disconnected: 2024/03/04 19:58:33 Leader 2 send to 0 heart fail
+leader 0 disconnected: 2024/03/04 19:58:33 node 1 get append entity request from 2, []
+leader 0 disconnected: 2024/03/04 19:58:33 node 1 get heart &{3 2 2 3 [] 2}
+leader 0 disconnected: 2024/03/04 19:58:33 node 2 send heart to 1, content is {3 2 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:33 node 0 is leader for idx 5 entry [{0 0} {2 101} {2 102} {2 103} {2 104} {2 104}]
+leader 0 back: 2024/03/04 19:58:33 node 0 finish start with entry 104
+leader 0 back: 2024/03/04 19:58:33 0 is leader, index is 5, cmd is 104
+leader 0 back: 2024/03/04 19:58:33 Leader 0 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:33 node 1 get append entity request from 0, []
+leader 0 back: 2024/03/04 19:58:33 node 0 send heart to 1, content is {2 0 5 2 [] 1}
+leader 0 back: 2024/03/04 19:58:33 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:34 node 1 start term 4 election
+leader 0 back: 2024/03/04 19:58:34 node 0 get vote request from 1 with &{4 1 2 3}, my term is 3 and my commit id 1
+leader 0 back: 2024/03/04 19:58:34 node 1 term 4 election success
+leader 0 back: 2024/03/04 19:58:34 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:34 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:34 node 0 send 2 index to 2 failed
+leader 0 back: 2024/03/04 19:58:34 leader 0 end 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 start 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 end 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 start 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 end 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 start 2 agreement
+leader 0 back: 2024/03/04 19:58:34 leader 0 end 2 agreement
+leader 0 back: 2024/03/04 19:58:34 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:34 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:34 node 0 start term 5 election
+leader 0 back: 2024/03/04 19:58:34 node 1 get vote request from 0 with &{5 0 1 2}, my term is 4 and my commit id 2
+leader 0 back: 2024/03/04 19:58:34 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:34 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:34 Leader 0 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:35 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:35 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:35 Leader 0 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:35 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:35 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:35 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:35 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:35 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:35 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:35 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:35 node 1 send heart to 0, content is {4 1 2 3 [] 2}
+leader 0 back: 2024/03/04 19:58:35 node 0 start term 6 election
+leader 0 back: 2024/03/04 19:58:35 node 1 get vote request from 0 with &{6 0 1 2}, my term is 4 and my commit id 2
+leader 0 back: 2024/03/04 19:58:35 node 1 is leader for idx 3 entry [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 finish start with entry 104
+leader 0 back: 2024/03/04 19:58:35 1 is leader, index is 3, cmd is 104
+leader 0 back: 2024/03/04 19:58:35 leader 1 start 0 agreement
+leader 0 back: 2024/03/04 19:58:35 node 1 before copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 try send 3 index to 0, {4 1 2 3 [{4 104}] 2}
+leader 0 back: 2024/03/04 19:58:35 node 1 after copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 leader 1 start 2 agreement
+leader 0 back: 2024/03/04 19:58:35 node 0 get append entity request from 1, [{4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 before copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 try send 3 index to 2, {4 1 2 3 [{4 104}] 2}
+leader 0 back: 2024/03/04 19:58:35 node 1 after copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 sent 3 index to 0 net success
+leader 0 back: 2024/03/04 19:58:35 node 1 sent 3 index to 0 failed
+leader 0 back: 2024/03/04 19:58:35 node 1 before copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 1 try send 2 index to 0, {4 1 1 2 [{3 103}] 2}
+leader 0 back: 2024/03/04 19:58:35 node 1 after copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:35 node 0 get append entity request from 1, [{3 103}]
+leader 0 back: 2024/03/04 19:58:35 node 0 get entity from 1
+leader 0 back: 2024/03/04 19:58:35 node 1 sent 2 index to 0 net success
+leader 0 back: 2024/03/04 19:58:35 node 1 sent 2 index to 0 success
+leader 0 back: 2024/03/04 19:58:35 leader 1 end 0 agreement
+leader 0 back: 2024/03/04 19:58:35 node 0 send apply message 103
+leader 0 back: 2024/03/04 19:58:35 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:35 Leader 0 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:36 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:36 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:36 node 2 send 2 index to 0 failed
+leader 0 back: 2024/03/04 19:58:36 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:36 node 2 try send 2 index to 0, {3 2 1 2 [{3 103}] 2}
+leader 0 back: 2024/03/04 19:58:36 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:36 Leader 0 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:36 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:36 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:36 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:36 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:36 node 0 start term 7 election
+leader 0 back: 2024/03/04 19:58:36 node 1 get vote request from 0 with &{7 0 2 3}, my term is 4 and my commit id 2
+leader 0 back: 2024/03/04 19:58:36 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:36 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:36 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:36 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:36 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:36 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:37 node 0 start term 8 election
+leader 0 back: 2024/03/04 19:58:37 node 1 get vote request from 0 with &{8 0 2 3}, my term is 4 and my commit id 2
+leader 0 back: 2024/03/04 19:58:37 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:37 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:37 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:37 node 1 send 3 index to 2 failed
+leader 0 back: 2024/03/04 19:58:37 node 1 before copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 1 try send 3 index to 2, {4 1 2 3 [{4 104}] 2}
+leader 0 back: 2024/03/04 19:58:37 node 1 after copy [{0 0} {2 101} {3 103} {4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:37 node 1 send heart to 0, content is {4 1 3 4 [] 2}
+leader 0 back: 2024/03/04 19:58:37 Leader 0 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:37 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:37 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:37 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:37 node 1 is leader for idx 4 entry [{0 0} {2 101} {3 103} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 1 finish start with entry 104
+leader 0 back: 2024/03/04 19:58:37 1 is leader, index is 4, cmd is 104
+leader 0 back: 2024/03/04 19:58:37 leader 1 start 0 agreement
+leader 0 back: 2024/03/04 19:58:37 node 1 before copy [{0 0} {2 101} {3 103} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 1 try send 3 index to 0, {4 1 2 3 [{4 104}] 2}
+leader 0 back: 2024/03/04 19:58:37 node 1 after copy [{0 0} {2 101} {3 103} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 0 get append entity request from 1, [{4 104}]
+leader 0 back: 2024/03/04 19:58:37 node 0 get entity from 1
+leader 0 back: 2024/03/04 19:58:37 node 1 sent 3 index to 0 net success
+leader 0 back: 2024/03/04 19:58:37 node 1 sent 3 index to 0 success
+leader 0 back: 2024/03/04 19:58:37 leader 1 end 0 agreement
+leader 0 back: 2024/03/04 19:58:37 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:37 leader 1 check for index 3, 0 node is match, 3
+leader 0 back: 2024/03/04 19:58:37 leader 1 konw 3 index [{0 0} {2 101} {3 103} {4 104} {4 104}] is commited, agree is 2, need is 2 
+leader 0 back: 2024/03/04 19:58:37 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:37 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:37 node 1 send apply message 104
+leader 0 back: 2024/03/04 19:58:37 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:38 node 1 send 3 index to 2 failed
+leader 0 back: 2024/03/04 19:58:38 node 1 before copy [{0 0} {2 101} {3 103} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:38 node 1 try send 3 index to 2, {4 1 2 3 [{4 104}] 3}
+leader 0 back: 2024/03/04 19:58:38 node 1 after copy [{0 0} {2 101} {3 103} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:38 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:38 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:38 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:38 node 0 start term 9 election
+leader 0 back: 2024/03/04 19:58:38 node 1 get vote request from 0 with &{9 0 2 3}, my term is 4 and my commit id 3
+leader 0 back: 2024/03/04 19:58:38 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:38 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:38 Leader 0 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:38 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:38 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:38 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:38 Leader 0 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:39 Leader 0 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:39 node 0 send 2 index to 1 failed
+leader 0 back: 2024/03/04 19:58:39 leader 0 end 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 start 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 end 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 start 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 end 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 start 1 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 0 end 1 agreement
+leader 0 back: 2024/03/04 19:58:39 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:39 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:39 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:39 node 0 start term 10 election
+leader 0 back: 2024/03/04 19:58:39 node 1 get vote request from 0 with &{10 0 2 3}, my term is 4 and my commit id 3
+leader 0 back: 2024/03/04 19:58:39 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:39 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:39 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:39 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:39 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:39 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:39 node 1 send heart to 0, content is {4 1 4 4 [] 3}
+leader 0 back: 2024/03/04 19:58:39 node 2 send 2 index to 0 failed
+leader 0 back: 2024/03/04 19:58:39 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:39 node 2 try send 2 index to 0, {3 2 1 2 [{3 103}] 2}
+leader 0 back: 2024/03/04 19:58:39 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:39 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:39 node 1 is leader for idx 5 entry [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:39 node 1 finish start with entry 104
+leader 0 back: 2024/03/04 19:58:39 1 is leader, index is 5, cmd is 104
+leader 0 back: 2024/03/04 19:58:39 leader 1 start 0 agreement
+leader 0 back: 2024/03/04 19:58:39 node 1 before copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:39 node 1 try send 4 index to 0, {4 1 3 4 [{4 104}] 3}
+leader 0 back: 2024/03/04 19:58:39 node 1 after copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:39 node 0 get append entity request from 1, [{4 104}]
+leader 0 back: 2024/03/04 19:58:39 node 0 get entity from 1
+leader 0 back: 2024/03/04 19:58:39 node 1 sent 4 index to 0 net success
+leader 0 back: 2024/03/04 19:58:39 node 1 sent 4 index to 0 success
+leader 0 back: 2024/03/04 19:58:39 leader 1 end 0 agreement
+leader 0 back: 2024/03/04 19:58:39 leader 1 check for index 4, 0 node is match, 4
+leader 0 back: 2024/03/04 19:58:39 leader 1 konw 4 index [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104}] is commited, agree is 2, need is 2 
+leader 0 back: 2024/03/04 19:58:39 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:39 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:39 node 0 send apply message 104
+leader 0 back: 2024/03/04 19:58:39 node 1 send apply message 104
+leader 0 back: 2024/03/04 19:58:39 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:39 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:40 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:40 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:40 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:40 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:40 node 0 start term 11 election
+leader 0 back: 2024/03/04 19:58:40 node 1 get vote request from 0 with &{11 0 3 4}, my term is 4 and my commit id 4
+leader 0 back: 2024/03/04 19:58:40 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:40 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:40 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:40 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:40 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:40 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:40 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:40 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:41 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:41 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:41 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:41 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:41 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:41 node 0 start term 12 election
+leader 0 back: 2024/03/04 19:58:41 node 1 get vote request from 0 with &{12 0 3 4}, my term is 4 and my commit id 4
+leader 0 back: 2024/03/04 19:58:41 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:41 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:41 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:41 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:41 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:41 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:41 node 1 send heart to 0, content is {4 1 5 4 [] 4}
+leader 0 back: 2024/03/04 19:58:41 node 1 is leader for idx 6 entry [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:41 node 1 finish start with entry 104
+leader 0 back: 2024/03/04 19:58:41 1 is leader, index is 6, cmd is 104
+leader 0 back: 2024/03/04 19:58:41 leader 1 start 0 agreement
+leader 0 back: 2024/03/04 19:58:41 node 1 before copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:41 node 1 try send 5 index to 0, {4 1 4 4 [{4 104}] 4}
+leader 0 back: 2024/03/04 19:58:41 node 1 after copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:41 node 0 get append entity request from 1, [{4 104}]
+leader 0 back: 2024/03/04 19:58:41 node 0 get entity from 1
+leader 0 back: 2024/03/04 19:58:41 node 1 sent 5 index to 0 net success
+leader 0 back: 2024/03/04 19:58:41 node 1 sent 5 index to 0 success
+leader 0 back: 2024/03/04 19:58:41 leader 1 end 0 agreement
+leader 0 back: 2024/03/04 19:58:41 leader 1 check for index 5, 0 node is match, 5
+leader 0 back: 2024/03/04 19:58:41 leader 1 konw 5 index [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}] is commited, agree is 2, need is 2 
+leader 0 back: 2024/03/04 19:58:41 node 1 send apply message 104
+leader 0 back: 2024/03/04 19:58:41 node 0 send apply message 104
+leader 0 back: 2024/03/04 19:58:41 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:42 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:42 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:42 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:42 node 1 send 3 index to 2 failed
+leader 0 back: 2024/03/04 19:58:42 node 1 before copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:42 node 1 try send 3 index to 2, {4 1 2 3 [{4 104}] 5}
+leader 0 back: 2024/03/04 19:58:42 node 1 after copy [{0 0} {2 101} {3 103} {4 104} {4 104} {4 104} {4 104}]
+leader 0 back: 2024/03/04 19:58:42 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:42 node 0 start term 13 election
+leader 0 back: 2024/03/04 19:58:42 node 1 get vote request from 0 with &{13 0 4 4}, my term is 4 and my commit id 5
+leader 0 back: 2024/03/04 19:58:42 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:42 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:42 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:42 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:42 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:42 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:42 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:42 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:42 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:43 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:43 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 Leader 1 send to 2 heart fail
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:43 node 0 start term 14 election
+leader 0 back: 2024/03/04 19:58:43 node 1 get vote request from 0 with &{14 0 4 4}, my term is 4 and my commit id 5
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:43 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 0 heart fail
+leader 0 back: 2024/03/04 19:58:43 node 2 send 2 index to 0 failed
+leader 0 back: 2024/03/04 19:58:43 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:43 node 2 try send 2 index to 0, {3 2 1 2 [{3 103}] 2}
+leader 0 back: 2024/03/04 19:58:43 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:43 Leader 2 send to 1 heart fail
+leader 0 back: 2024/03/04 19:58:43 node 2 send 2 index to 0 failed
+leader 0 back: 2024/03/04 19:58:43 node 2 before copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:43 node 2 try send 2 index to 0, {3 2 1 2 [{3 103}] 2}
+leader 0 back: 2024/03/04 19:58:43 node 2 after copy [{0 0} {2 101} {3 103}]
+leader 0 back: 2024/03/04 19:58:43 node 0 get append entity request from 1, []
+leader 0 back: 2024/03/04 19:58:43 node 1 send heart to 0, content is {4 1 6 4 [] 5}
+leader 0 back: 2024/03/04 19:58:43 Leader 1 send to 2 heart fail
+--- FAIL: TestRejoin2B (12.75s)
+    config.go:479: one(104) failed to reach agreement
+FAIL
+exit status 1
+FAIL	6824/raft	12.754s

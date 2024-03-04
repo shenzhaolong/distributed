@@ -190,16 +190,16 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	// log.Printf("node %d get vote request from %d with term %d, my term is %d and my votefor is %d",
-	//	rf.me, args.CandidateId, args.Term, rf.currentTerm, rf.votedFor)
+	log.Printf("node %d get vote request from %d with %v, my term is %d and my commit id %d",
+		rf.me, args.CandidateId, args, rf.currentTerm, rf.commitIndex)
 	/* 需要投票的情况
 	** 1.投票者任期比当前节点大，且没有投别的候选人
 	** 这导致对一个任期只能投一次票，两个节点同时超时就会导致一起进入选举状态立即投票给自己，进而不能给其他节点投票
 	** 改进措施：2.一旦选举期收到任期更大的请求则立即投票
 	 */
-	if l := len(rf.Entries); ((args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) ||
+	if ((args.Term > rf.currentTerm && (rf.votedFor == -1 || rf.votedFor == args.CandidateId)) ||
 		(rf.peerKind == 2 && rf.VotedForTerm < args.Term)) &&
-		(l <= args.LastLogIndex && rf.Entries[l-1].Term <= args.LastLogTerm) {
+		(rf.commitIndex <= args.LastLogIndex && rf.Entries[rf.commitIndex].Term <= args.LastLogTerm) {
 		reply.VoteGranted = 1
 		rf.peerKind = 1
 		rf.VotedForTerm = args.Term
@@ -212,7 +212,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 
 func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	rf.mu.Lock()
-	log.Printf("node %d get append entity request from %d, %v", rf.me, args.LeaderId, args.Entries)
+	log.Printf("node %d get append entity request from %d, %v", rf.me, args.LeaderId, args)
 	reply.Term = rf.currentTerm
 	if args.Term < rf.currentTerm || len(rf.Entries)-1 < args.PrevLogIndex { // 忽略过期的消息
 		rf.mu.Unlock()
@@ -225,13 +225,12 @@ func (rf *Raft) AppendEntity(args *AppendEntriesArgs, reply *AppendEntriesReply)
 		rf.votedFor = -1
 		rf.lastLeaderTime = getTimeNowMs() // 更新最后一次收到的时间
 
-		if len(rf.Entries)-1 < args.PrevLogIndex {
+		if rf.commitIndex+1 < args.PrevLogIndex && len(args.Entries) > 0 {
 			rf.mu.Unlock()
 			reply.Success = false
 			return
 		}
-		if len(rf.Entries)-1 >= args.PrevLogIndex &&
-			rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm {
+		if rf.Entries[args.PrevLogIndex].Term != args.PrevLogTerm {
 			rf.mu.Unlock()
 			reply.Success = false
 			// 截断不匹配的所有日志
@@ -398,9 +397,9 @@ func (rf *Raft) listenCommitIndex(index int) {
 					rf.me, index, i, rf.matchIndex[i])
 			}
 			if cnt%5 == 0 {
-				log.Printf("check %d times", cnt)
-				log.Printf("%d match index is %d, need is %d , agree num is %d",
-					i, rf.matchIndex[i], index, agreeNum)
+				// log.Printf("check %d times", cnt)
+				// log.Printf("%d match index is %d, need is %d , agree num is %d",
+				// 	i, rf.matchIndex[i], index, agreeNum)
 
 			}
 		}
@@ -413,7 +412,9 @@ func (rf *Raft) listenCommitIndex(index int) {
 			rf.mu.Lock()
 			log.Printf("leader %d konw %d index %v is commited, agree is %d, need is %d ",
 				rf.me, index, rf.Entries, agreeNum, needWaitNum)
-			rf.commitIndex = index
+			if rf.commitIndex < index {
+				rf.commitIndex = index
+			}
 			rf.mu.Unlock()
 			return
 		}
@@ -517,8 +518,7 @@ func (rf *Raft) startElection() {
 	}
 	rf.VotedForTerm = electionTerm + 1
 	rf.peerKind = 2
-	l := len(rf.Entries)
-	lastLogTerm := rf.Entries[l-1].Term
+	lastLogTerm := rf.Entries[rf.commitIndex].Term
 	rf.votedFor = rf.me
 	needWaitNum := int((len(rf.peers) + 1) / 2)
 	agreeNum := 1
@@ -541,7 +541,7 @@ func (rf *Raft) startElection() {
 					req := RequestVoteArgs{
 						Term:         rf.VotedForTerm,
 						CandidateId:  rf.me,
-						LastLogIndex: l,
+						LastLogIndex: rf.commitIndex,
 						LastLogTerm:  lastLogTerm,
 					}
 					rep := RequestVoteReply{}
@@ -664,20 +664,14 @@ func (rf *Raft) listenElection() {
 				if i != rf.me {
 					go func(i int) {
 						rf.mu.Lock()
-						l := len(rf.Entries)
 						appendEntriesArgs := AppendEntriesArgs{
 							Term:         rf.currentTerm,
 							LeaderId:     rf.me,
-							PrevLogIndex: l - 1,
-							PrevLogTerm:  rf.Entries[l-1].Term,
+							PrevLogIndex: rf.commitIndex,
 							Entries:      nil,
 							LeaderCommit: rf.commitIndex,
 						}
-						if l == 0 {
-							appendEntriesArgs.PrevLogTerm = 0
-						} else {
-							appendEntriesArgs.PrevLogTerm = rf.Entries[l-1].Term
-						}
+						appendEntriesArgs.PrevLogTerm = rf.Entries[rf.commitIndex].Term
 						rf.mu.Unlock()
 
 						appendEntriesReply := AppendEntriesReply{}
@@ -738,10 +732,11 @@ func (rf *Raft) listenSendApply() {
 			rf.mu.Unlock()
 			*rf.applyCh <- applyMsg
 		}
-		time.Sleep(time.Millisecond * 5)
+		time.Sleep(time.Millisecond * 100)
 		rf.mu.Lock()
 		lastSendIndex = rf.lastSendApply
 		commitIndex = rf.commitIndex
+		// log.Printf("node %d check my commit index is %v", rf.me, rf.commitIndex)
 		rf.mu.Unlock()
 	}
 }
