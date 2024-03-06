@@ -175,10 +175,11 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		(args.LastLogTerm == rf.log[lastIdx].Term && args.LastLogIndex >= lastIdx+1) {
 		isNew = true
 	}
+	defer log.Printf("node %d reply to %d is %v, isNew is %v, lastTerm is %d, LastLogIndex is %d", rf.me, args.CandidateId, reply, isNew, rf.log[lastIdx].Term, lastIdx+1)
 	if isNew && (rf.votedFor == -1 || rf.votedFor == args.CandidateId) {
 		rf.votedFor = args.CandidateId
 		reply.VoteGranted = true
-		rf.lastLeaderTime = time.Now().UnixMicro()
+		rf.lastLeaderTime = time.Now().UnixMilli()
 	}
 }
 
@@ -205,7 +206,7 @@ func (rf *Raft) startElection() {
 					request := RequestVoteArgs{
 						Term:         forTerm,
 						CandidateId:  rf.me,
-						LastLogIndex: len(rf.log) - 1,
+						LastLogIndex: len(rf.log),
 						LastLogTerm:  rf.log[(len(rf.log) - 1)].Term,
 					}
 					reply := RequestVoteReply{}
@@ -271,8 +272,10 @@ func (rf *Raft) listenElection() {
 		state := rf.state
 		lastTime := rf.lastLeaderTime
 		rf.mu.Unlock()
-		if state != Leader && time.Now().UnixMilli()-lastTime >= int64(rf.electionTimeout) {
+		nowTime := time.Now().UnixMilli()
+		if state != Leader && nowTime-lastTime >= int64(rf.electionTimeout) {
 			rf.mu.Lock()
+			log.Printf("node %d lastTime is %d, nowTime is %d, ele is %d", rf.me, lastTime, nowTime, rf.electionTimeout)
 			rf.lastLeaderTime = time.Now().UnixMilli()
 			rf.mu.Unlock()
 			go rf.startElection()
@@ -373,7 +376,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.state = Follower
 	rf.log = append(rf.log, Entry{0, nil})
 	rand.NewSource(time.Now().UnixNano())
-	rf.electionTimeout = rand.Intn(300) + 150
+	rf.electionTimeout = (rf.me+1)*400/len(rf.peers) + 150
 
 	// Your initialization code here (2A, 2B, 2C).
 	go rf.listenElection()
