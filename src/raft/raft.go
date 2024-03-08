@@ -281,7 +281,10 @@ func (rf *Raft) startElection() {
 					}
 					log.Printf("node %d send  RequestVote %v to %d", rf.me, request, target)
 					ok := rf.sendRequestVote(target, &request, &reply)
-					if ok {
+					rf.mu.Lock()
+					state = rf.state
+					rf.mu.Unlock()
+					if ok && reply.UUID == UUID && state == Candidate {
 						if reply.Term > forTerm {
 							rf.mu.Lock()
 							rf.currentTerm = reply.Term
@@ -289,7 +292,7 @@ func (rf *Raft) startElection() {
 							rf.votedFor = -1
 							rf.lastLeaderTime = time.Now().UnixMilli()
 							rf.mu.Unlock()
-						} else if reply.VoteGranted && reply.UUID == UUID {
+						} else if reply.VoteGranted {
 							agreeMutex.Lock()
 							agreeNum++
 							agreeMutex.Unlock()
@@ -372,7 +375,7 @@ func (rf *Raft) sendEntity(target int, logs []Entry, prevLogIndex int, prevLogTe
 	reply := AppendEntriesReply{}
 	rf.mu.Unlock()
 	ok := rf.sendAppendEntries(target, &request, &reply)
-	if ok {
+	if ok && reply.UUID == UUID {
 		rf.mu.Lock()
 		forTerm = rf.currentTerm
 		if reply.Term > forTerm {
@@ -380,7 +383,7 @@ func (rf *Raft) sendEntity(target int, logs []Entry, prevLogIndex int, prevLogTe
 			rf.state = Follower
 			rf.votedFor = -1
 			rf.lastLeaderTime = time.Now().UnixMilli()
-		} else if reply.UUID == UUID && rf.state == Leader {
+		} else if rf.state == Leader {
 			if reply.Success {
 				if rf.matchIndex[target] < prevLogIndex {
 					rf.matchIndex[target] = prevLogIndex
