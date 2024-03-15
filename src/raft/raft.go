@@ -229,6 +229,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		rf.persist()
 		rf.lastLeaderTime = time.Now().UnixMilli()
 	}
+	reply.Term = rf.CurrentTerm
 	// defer Log.Printf("node %d vote result %t on node %d, my last Idx %d, last term is %d",
 	// 	rf.me, reply.VoteGranted, args.CandidateId, lastIdx, rf.Log[lastIdx].Term)
 }
@@ -265,21 +266,34 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.CurrentTerm = args.Term
 	rf.state = Follower
 	rf.VotedFor = -1
-	defer log.Printf("node %d get AppendEntries from %d, args is %v, reply is %v",
-		rf.me, args.LeaderId, args, reply)
+	defer log.Printf("node %d get AppendEntries from %d, reply is %v",
+		rf.me, args.LeaderId, reply)
 	if args.PrevLogIndex > len(rf.Log)-1 {
 		reply.Term = rf.CurrentTerm
+		reply.ConflictIndex = 1
 		return
 	}
 	if rf.Log[args.PrevLogIndex].Term != args.PrevLogTerm {
-		rf.Log = rf.Log[:args.PrevLogIndex]
 		reply.Term = rf.CurrentTerm
+		term := rf.Log[args.PrevLogIndex].Term
+		reply.ConflictIndex = 1
+		for i := args.PrevLogIndex; i > 0; i-- {
+			if rf.Log[i].Term == term {
+				reply.ConflictIndex = i
+			} else {
+				break
+			}
+		}
+		rf.Log = rf.Log[:args.PrevLogIndex]
 		return
 	}
+	reply.Term = rf.CurrentTerm
 	if args.LeaderCommit > rf.CommitIndex {
 		if args.PrevLogIndex < args.LeaderCommit {
+			log.Printf("2 node %d change commit from %d to %d", rf.me, rf.CommitIndex, args.PrevLogIndex)
 			rf.CommitIndex = args.PrevLogIndex
 		} else {
+			log.Printf("3 node %d change commit from %d to %d", rf.me, rf.CommitIndex, args.LeaderCommit)
 			rf.CommitIndex = args.LeaderCommit
 		}
 	}
@@ -339,7 +353,7 @@ func (rf *Raft) startElection() {
 							rf.lastLeaderTime = time.Now().UnixMilli()
 							rf.persist()
 							rf.mu.Unlock()
-						} else if reply.VoteGranted {
+						} else if reply.VoteGranted && reply.Term == request.Term {
 							agreeMutex.Lock()
 							agreeNum++
 							agreeMutex.Unlock()
@@ -405,7 +419,7 @@ func (rf *Raft) listenElection() {
 			rf.mu.Unlock()
 			go rf.startElection()
 		}
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(30 * time.Millisecond)
 	}
 }
 
@@ -434,18 +448,26 @@ func (rf *Raft) sendEntity(target int, Logs []Entry, prevLogIndex int, prevLogTe
 			rf.VotedFor = -1
 			rf.lastLeaderTime = time.Now().UnixMilli()
 			rf.persist()
-		} else {
+		} else if reply.Term == request.Term {
 			if reply.Success {
 				if rf.matchIndex[target] < prevLogIndex+len(Logs) {
 					rf.matchIndex[target] = prevLogIndex + len(Logs)
 				}
 				if rf.nextIndex[target] < prevLogIndex+len(Logs)+1 {
+					log.Printf("2 node %d change next from %d to %d", rf.me, rf.nextIndex[target], reply.ConflictIndex)
 					rf.nextIndex[target] = prevLogIndex + len(Logs) + 1
 				}
 			} else {
-				if rf.nextIndex[target] > prevLogIndex-1 && prevLogIndex-1 >= 1 {
-					rf.nextIndex[target] = prevLogIndex - 1
-					log.Printf("node %d next change %v", rf.me, rf.nextIndex)
+				// if rf.nextIndex[target] > prevLogIndex-1 && prevLogIndex-1 >= 1 {
+				// 	rf.nextIndex[target] = prevLogIndex - 1
+				// 	log.Printf("node %d next change %v", rf.me, rf.nextIndex)
+				// }
+				if rf.nextIndex[target] > reply.ConflictIndex {
+					log.Printf("1 node %d change next from %d to %d", rf.me, rf.nextIndex[target], reply.ConflictIndex)
+					rf.nextIndex[target] = reply.ConflictIndex
+					if rf.nextIndex[target] > len(rf.Log) {
+						rf.nextIndex[target] = len(rf.Log)
+					}
 				}
 			}
 		}
@@ -468,15 +490,22 @@ func (rf *Raft) listenSendHeart() {
 				}
 			}
 		}
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(120 * time.Millisecond)
 	}
 }
 
 func (rf *Raft) listenAgreementEntry(target int) {
 	for !rf.killed() {
 		rf.mu.Lock()
+		log.Printf("leader %d nextIndex %v", rf.me, rf.nextIndex)
 		state := rf.state
 		prevLogIndex := rf.nextIndex[target] - 1
+		if prevLogIndex < 0 {
+			prevLogIndex = 0
+		}
+		if prevLogIndex > len(rf.Log)-1 {
+			prevLogIndex = len(rf.Log) - 1
+		}
 		prevLogTerm := rf.Log[prevLogIndex].Term
 		Logs := make([]Entry, len(rf.Log[prevLogIndex+1:]))
 		copy(Logs, rf.Log[prevLogIndex+1:])
@@ -487,7 +516,7 @@ func (rf *Raft) listenAgreementEntry(target int) {
 		if len(Logs) != 0 {
 			go rf.sendEntity(target, Logs, prevLogIndex, prevLogTerm)
 		}
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(25 * time.Millisecond)
 	}
 }
 
@@ -520,10 +549,13 @@ func (rf *Raft) listenMajorCopy() {
 		}
 		log.Printf("leader %d check  maxIndex %d, cnt is %v, matchIndex is %v",
 			rf.me, maxIndex, cnt, rf.matchIndex)
-		rf.CommitIndex = maxIndex
-		rf.persist()
+		if rf.Log[maxIndex].Term == rf.CurrentTerm && maxIndex > rf.CommitIndex {
+			log.Printf("1 node %d change commit from %d to %d", rf.me, rf.CommitIndex, maxIndex)
+			rf.CommitIndex = maxIndex
+			rf.persist()
+		}
 		rf.mu.Unlock()
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(20 * time.Millisecond)
 	}
 }
 
@@ -532,6 +564,8 @@ func (rf *Raft) listenCommitApply() {
 		rf.mu.Lock()
 		if rf.LastApplied < rf.CommitIndex {
 			rf.LastApplied++
+			log.Printf("node %d try send apply msg, idx is %d, my log len %d, commit is %d",
+				rf.me, rf.LastApplied, len(rf.Log), rf.CommitIndex)
 			applyMsg := ApplyMsg{
 				CommandValid: true,
 				Command:      rf.Log[rf.LastApplied].Command,
@@ -632,13 +666,6 @@ func (rf *Raft) Kill() {
 func (rf *Raft) killed() bool {
 	z := atomic.LoadInt32(&rf.dead)
 	return z == 1
-}
-
-func (rf *Raft) listenPersist() {
-	for !rf.killed() {
-		rf.persist()
-		time.Sleep(30 * time.Millisecond)
-	}
 }
 
 // the service or tester wants to create a Raft server. the ports

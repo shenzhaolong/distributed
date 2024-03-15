@@ -10,6 +10,7 @@ package raft
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"sync"
 	"sync/atomic"
@@ -780,13 +781,15 @@ func TestFigure8Unreliable2C(t *testing.T) {
 			cfg.setlongreordering(true)
 		}
 		leader := -1
+		sn := 0
 		for i := 0; i < servers; i++ {
-			_, _, ok := cfg.rafts[i].Start(rand.Int() % 10000)
+			sn = rand.Int() % 10000
+			_, _, ok := cfg.rafts[i].Start(sn)
 			if ok && cfg.connected[i] {
 				leader = i
+				log.SetPrefix(fmt.Sprintf("Times %d, Leader %d: , sn is %d: ", iters, leader, sn))
 			}
 		}
-
 		if (rand.Int() % 1000) < 100 {
 			ms := rand.Int63() % (int64(RaftElectionTimeout/time.Millisecond) / 2)
 			time.Sleep(time.Duration(ms) * time.Millisecond)
